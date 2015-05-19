@@ -1,7 +1,7 @@
 #include "Includes.h"
 
 void drawHouse(GLfloat x, GLfloat y, GLfloat z, GLfloat scaleX, GLfloat scaleY, GLfloat scaleZ, GLuint houseTexID, GLuint roofTexID) {
-	point3 verts[] = {
+	vec3 verts[] = {
 		// Front
 		{ -0.5, 0, -0.5 },
 		{ 0.5, 0, -0.5 },
@@ -24,7 +24,7 @@ void drawHouse(GLfloat x, GLfloat y, GLfloat z, GLfloat scaleX, GLfloat scaleY, 
 		{ 0.5, 0, -0.5 },
 	};
 
-	point2 uv[16] = {
+	vec2 uv[16] = {
 		{ 0, 0 },
 		{ 1, 0 },
 		{ 1, 1 },
@@ -43,7 +43,7 @@ void drawHouse(GLfloat x, GLfloat y, GLfloat z, GLfloat scaleX, GLfloat scaleY, 
 		{ 0, 1 }
 	};
 
-	point3 vertsRoof[] = {
+	vec3 vertsRoof[] = {
 		// Front
 		{ -0.5, 1, 0.5 },
 		{ 0.5, 1, 0.5 },
@@ -64,7 +64,7 @@ void drawHouse(GLfloat x, GLfloat y, GLfloat z, GLfloat scaleX, GLfloat scaleY, 
 		{ -0.5, 1, -0.5 },
 	};
 
-	point2 uvRoof[] = {
+	vec2 uvRoof[] = {
 		{ 0, 0 },
 		{ 1, 0 },
 		{ 1, 1 },
@@ -131,14 +131,14 @@ void drawHouse(GLfloat x, GLfloat y, GLfloat z, GLfloat scaleX, GLfloat scaleY, 
 }
 
 void drawGround(GLuint textureID) {
-	point3 verts[4] = {
+	vec3 verts[4] = {
 		{ -250, 0, 0 },
 		{ 250, 0, 0 },
 		{250, 0, -250},
 		{ -250, 0, -250}
 	};
 
-	point2 uv[4] = {
+	vec2 uv[4] = {
 		{ 0, 0 },
 		{ 250, 0 },
 		{ 250, 250},

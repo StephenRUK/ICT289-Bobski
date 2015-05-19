@@ -48,9 +48,9 @@ void camWalkBackwards(Camera* cam, GLfloat distance) {
 }
 
 void camStrafeLeft(Camera* cam, GLfloat distance) {
-	point3 up = { cam->upX, cam->upY, cam->upZ };
-	point3 dir = { cam->fwdX, cam->fwdY, cam->fwdZ };
-	point3 left;
+	vec3 up = { cam->upX, cam->upY, cam->upZ };
+	vec3 dir = { cam->fwdX, cam->fwdY, cam->fwdZ };
+	vec3 left;
 	mathCrossProduct(up, dir, left);
 
 	cam->X += distance * left[0];
@@ -58,9 +58,9 @@ void camStrafeLeft(Camera* cam, GLfloat distance) {
 }
 
 void camStrafeRight(Camera* cam, GLfloat distance) {
-	point3 up = { cam->upX, cam->upY, cam->upZ };
-	point3 dir = { cam->fwdX, cam->fwdY, cam->fwdZ };
-	point3 right;
+	vec3 up = { cam->upX, cam->upY, cam->upZ };
+	vec3 dir = { cam->fwdX, cam->fwdY, cam->fwdZ };
+	vec3 right;
 	mathCrossProduct(dir, up, right);
 
 	cam->X += distance * right[0];
