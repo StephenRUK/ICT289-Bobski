@@ -34,4 +34,7 @@ typedef struct GameObject {
 	//int childrenLength;
 } GameObject;
 
+
+void gameObjUpdatePhysics(GameObject* obj);
+
 #endif
