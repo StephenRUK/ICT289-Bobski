@@ -4,6 +4,6 @@
 typedef float vec2[2];
 typedef float vec3[3];
 
-typedef GLfloat vertex3[3];
+typedef float vertex3[3];
 
 #endif
