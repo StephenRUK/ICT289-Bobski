@@ -17,7 +17,7 @@ typedef struct Transform {
 	vec3 position;
 	vec3 scale;
 
-	vec3 rotX, rotY, rotZ;
+	vec3 rotationAngles;
 
 } Transform;
 
