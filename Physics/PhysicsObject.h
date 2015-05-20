@@ -21,6 +21,8 @@ typedef struct PhysicsObject {
 
 } PhysicsObject;
 
+void physObjSetDefaults(PhysicsObject* phys);
+
 void physObjUpdateVelocity(PhysicsObject* physics, float dt);
 
 //void physObjApplyGravity(PhysicsObject* physics);
