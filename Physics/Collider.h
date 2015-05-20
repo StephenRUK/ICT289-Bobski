@@ -5,6 +5,8 @@
 
 /**
 * Collider: Axis-aligned bounding box (AABB)
+* Reference:
+*	http://www.euclideanspace.com/threed/animation/collisiondetect/
 **/
 typedef struct Collider {
 	vec3 min;
