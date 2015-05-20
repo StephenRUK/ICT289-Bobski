@@ -180,6 +180,36 @@ void initGameObjects() {
 
 	sceneAddItem(&scene, box);
 
+	//
+	// Box 2
+	//
+	transformSetDefaults(&trans);
+	trans.position[0] = -10;
+	trans.position[1] = 15;
+	mathVector3MultiplyScalar(5, trans.scale, trans.scale);
+
+	physObjSetDefaults(&physics);
+	physics.acceleration[0] = -0.5;
+
+	GameObject* box2 = gameObjCreate(&boxModel, &trans, &physics);
+
+	sceneAddItem(&scene, box2);
+
+	//
+	// Box 3
+	//
+	transformSetDefaults(&trans);
+	trans.position[0] = 25;
+	trans.position[1] = 15;
+	mathVector3MultiplyScalar(5, trans.scale, trans.scale);
+
+	physObjSetDefaults(&physics);
+	physics.acceleration[1] = 9.81;	// Cancels out gravity, so just "hovers"
+
+	GameObject* box3 = gameObjCreate(&boxModel, &trans, &physics);
+
+	sceneAddItem(&scene, box3);
+
 }
 
 void idle() {
