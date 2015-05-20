@@ -1,8 +1,7 @@
 #include "PhysicsObject.h"
 #include "../Maths/MathsUtil.h"
 
-PhysicsObject* physObjCreate() {
-	PhysicsObject* phys = malloc(sizeof(PhysicsObject));
+void physObjSetDefaults(PhysicsObject* phys) {
 
 	phys->acceleration[0] = 0;
 	phys->acceleration[1] = 0;
@@ -15,6 +14,4 @@ PhysicsObject* physObjCreate() {
 	phys->isKinetic = true;
 	phys->gravityFactor = 1;
 	phys->mass = 1;
-
-	return phys;
 }

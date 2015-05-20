@@ -23,6 +23,6 @@ typedef struct PhysicsObject {
 
 } PhysicsObject;
 
-PhysicsObject* physObjCreate();
+void physObjSetDefaults(PhysicsObject* phys);
 
 #endif
