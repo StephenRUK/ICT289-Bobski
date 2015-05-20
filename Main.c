@@ -13,16 +13,48 @@
 #include "Models.h"
 #include "Camera.h"
 #include "Loader/ImageLoader.h"
+#include "GameObject.h"
 
 const int windowWidth = 800;
 const int windowHeight = 600;
 
 Camera cam;
+
+float elapsedTime;	// Milliseconds elapsed since application start
+float dt = 0;	// Seconds elapsed between loops
+
+//
+// Debug models etc
+//
 GLuint texHouse, texRoof, texGround;
+Model boxModel;
+GameObject box;
 
 //***********************************/
 
+void doPhysics() {
+
+	int newElapsedTime = glutGet(GLUT_ELAPSED_TIME);
+	dt = (newElapsedTime - elapsedTime)/1000;
+	elapsedTime = newElapsedTime;
+
+	// Loop through GameObjects
+	// Currently: 'debug' on one object
+
+	gameObjUpdatePhysics(&box, dt);
+	
+}
+
 void display(void) {
+	//
+	// Physics
+	//
+	doPhysics();
+
+
+	//
+	// Render
+	//
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
@@ -33,11 +65,14 @@ void display(void) {
 
 	drawGround(texGround);
 
-	glTranslatef(0, 0, -60);	
+	glTranslatef(0, 0, -60);
+	gameObjDrawModel(&box);
 
+	/*
 	drawHouse(0, 0, -20,	15, 7, 8,	texHouse, texRoof);
 	drawHouse(20, 0, -4,	10, 8, 12,	texHouse, texRoof);
 	drawHouse(-18, 0, 30,	20, 20, 40,	texHouse, texRoof);
+	*/
 
     glutSwapBuffers();  // SWAP visible & drawing buffers
     glFlush();
@@ -101,10 +136,31 @@ void mouseMoveHandler(int x, int y) {
 	lastMouseY = y;
 }
 
+void loadModels() {
+	boxModel.vertices = boxVertices;
+	boxModel.vertexCount = 36;
+}
+
 void loadTextures() {
-	texHouse = imgLoadBitmapToTexture("Texture/house.bmp");
-	texRoof = imgLoadBitmapToTexture("Texture/roof.bmp");
 	texGround= imgLoadBitmapToTexture("Texture/piste_snow.bmp");
+}
+
+void initGameObjects() {
+	gameObjApplyDefaultTransform(&box);
+	physObjSetDefaults(&(box.physics));
+	box.model = boxModel;	// Future: Replace with model loading method
+
+	box.physics.velocity[0] = 0;
+	box.physics.velocity[1] = -1;
+	box.physics.velocity[2] = 0;
+
+	box.transform.position[1] = 25;
+	mathVector3MultiplyScalar(5, box.transform.scale, box.transform.scale);
+
+}
+
+void idle() {
+	glutPostRedisplay();
 }
 
 void init() {
@@ -116,6 +172,7 @@ void init() {
 	glutSpecialFunc(keyFunc);
 	glutKeyboardFunc(keyFunc2);
 	//glutPassiveMotionFunc(mouseMoveHandler);
+	glutIdleFunc(idle);
 
 	// Set up view
 	glMatrixMode(GL_PROJECTION);
@@ -128,14 +185,16 @@ void init() {
 	cam = camWithDefaults();
 	cam.Y = 1.68f;	// Player eyes height
 
-	//loadModels();
+	loadModels();
 	loadTextures();
+	initGameObjects();
+
 	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     // Switch over to modelview matrix now that projection has been set up
     glMatrixMode(GL_MODELVIEW);	
 
-	glClearColor(0, 0, 0, 0);
+	glClearColor(0, 0, 0, 1);
 
 }
 
