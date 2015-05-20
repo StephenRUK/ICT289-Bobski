@@ -17,9 +17,6 @@ void gameObjUpdatePhysics(GameObject* obj, float dt) {
 
 	// Apply gravity
 	phys->velocity[1] += phys->gravityFactor * -9.81 * dt;
-
-	printf("Velocity: %f", phys->velocity);
-
 }
 
 void gameObjDrawModel(GameObject* obj) {
@@ -46,17 +43,17 @@ void gameObjDrawModel(GameObject* obj) {
 	// Load data arrays
 	glEnableClientState(GL_VERTEX_ARRAY);
 	//glEnableClientState(GL_NORMAL_ARRAY);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	//glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	glVertexPointer(3, GL_FLOAT, 0, model->vertices);
 	//glNormalPointer(GL_FLOAT, 0, model->normals);
-	glTexCoordPointer(2, GL_FLOAT, 0, model->textureCoords);
+	//glTexCoordPointer(2, GL_FLOAT, 0, model->textureCoords);
 
 	glDrawArrays(GL_TRIANGLES, 0, model->vertexCount);
 
 	glDisableClientState(GL_VERTEX_ARRAY);
 	//glDisableClientState(GL_NORMAL_ARRAY);
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	//glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	// Cleanup
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -79,4 +76,13 @@ void gameObjApplyDefaultTransform(GameObject* obj) {
 	tf->rotationAngles[0] = 0;
 	tf->rotationAngles[1] = 0;
 	tf->rotationAngles[2] = 0;
+}
+
+GameObject* gameObjCreate(Model model, Transform transform, PhysicsObject physics) {
+	GameObject* obj = malloc(sizeof(GameObject));
+	obj->model = model;
+	obj->transform = transform;
+	obj->physics = physics;
+
+	return obj;
 }
