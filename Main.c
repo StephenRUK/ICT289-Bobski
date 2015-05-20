@@ -12,7 +12,7 @@
 #include "Includes.h"
 #include "Models.h"
 #include "Camera.h"
-#include "ImageLoader.h"
+#include "Loader/ImageLoader.h"
 
 const int windowWidth = 800;
 const int windowHeight = 600;

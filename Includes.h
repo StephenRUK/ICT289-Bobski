@@ -4,6 +4,6 @@
 #include <GL/freeglut.h>
 #include <stdbool.h>
 #include "Types.h"
-#include "MathsUtil.h"
+#include "Maths/MathsUtil.h"
 
 #endif
