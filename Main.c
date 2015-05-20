@@ -10,10 +10,11 @@
 #include <math.h>
 
 #include "Includes.h"
-#include "Models.h"
+#include "Models.h"	// Will be removed once model loader has been implemented
 #include "Camera.h"
 #include "Loader/ImageLoader.h"
 #include "GameObject.h"
+#include "Scene.h"
 
 const int windowWidth = 800;
 const int windowHeight = 600;
@@ -23,26 +24,41 @@ Camera cam;
 float elapsedTime;	// Milliseconds elapsed since application start
 float dt = 0;	// Seconds elapsed between loops
 
-//
-// Debug models etc
-//
-GLuint texHouse, texRoof, texGround;
-Model boxModel;
-GameObject box;
+SceneList scene;	// Contains all game objects in the scene
+
+GLuint texGround;	// Debug
 
 //***********************************/
 
 void doPhysics() {
 
 	int newElapsedTime = glutGet(GLUT_ELAPSED_TIME);
-	dt = (newElapsedTime - elapsedTime)/1000;
+	dt = (newElapsedTime - elapsedTime) / 1000;
 	elapsedTime = newElapsedTime;
 
+	//
 	// Loop through GameObjects
-	// Currently: 'debug' on one object
+	//
+	if (scene.first != NULL) {
+		SceneItem* item = scene.first;
+		while (item != NULL) {
+			gameObjUpdatePhysics(item->obj, dt);
 
-	gameObjUpdatePhysics(&box, dt);
+			item = item->next;
+		}
+	}
 	
+}
+
+void drawScene() {
+	if (scene.first != NULL) {
+		SceneItem* item = scene.first;
+		while (item != NULL) {
+			gameObjDrawModel(item->obj);
+
+			item = item->next;
+		}
+	}
 }
 
 void display(void) {
@@ -66,15 +82,10 @@ void display(void) {
 	drawGround(texGround);
 
 	glTranslatef(0, 0, -60);
-	gameObjDrawModel(&box);
+	
+	drawScene();
 
-	/*
-	drawHouse(0, 0, -20,	15, 7, 8,	texHouse, texRoof);
-	drawHouse(20, 0, -4,	10, 8, 12,	texHouse, texRoof);
-	drawHouse(-18, 0, 30,	20, 20, 40,	texHouse, texRoof);
-	*/
-
-    glutSwapBuffers();  // SWAP visible & drawing buffers
+    glutSwapBuffers();
     glFlush();
 }
 
@@ -136,10 +147,6 @@ void mouseMoveHandler(int x, int y) {
 	lastMouseY = y;
 }
 
-void loadModels() {
-	boxModel.vertices = boxVertices;
-	boxModel.vertexCount = 36;
-}
 
 void loadTextures() {
 	texGround= imgLoadBitmapToTexture("Texture/piste_snow.bmp");
@@ -150,21 +157,28 @@ void initGameObjects() {
 	//
 	// Box
 	//
-	gameObjApplyDefaultTransform(&box);
+
+	/* Future change:
+	Model model;
+	loadModel(&model, objFile, texFile);
+	*/
 	
-	box.model.vertices = boxVertices;
-	box.model.vertexCount = 36;
-	box.model.textureID = imgLoadBitmapToTexture("Texture/house.bmp");
+	Model boxModel;
+	boxModel.vertices = boxVertices;
+	boxModel.vertexCount = 36;
+	boxModel.textureID = imgLoadBitmapToTexture("Texture/house.bmp");
 
-	physObjSetDefaults(&(box.physics));
-	box.physics.velocity[0] = 0;
-	box.physics.velocity[1] = 0;
-	box.physics.velocity[2] = 0;
+	Transform trans;
+	transformSetDefaults(&trans);
+	trans.position[1] = 35;
+	mathVector3MultiplyScalar(2, trans.scale, trans.scale);
 
-	box.physics.gravityFactor = 1;
+	PhysicsObject physics;
+	physObjSetDefaults(&physics);
 
-	box.transform.position[1] = 35;
-	mathVector3MultiplyScalar(2, box.transform.scale, box.transform.scale);
+	GameObject* box = gameObjCreate(&boxModel, &trans, &physics);
+
+	sceneAddItem(&scene, box);
 
 }
 
@@ -194,7 +208,6 @@ void init() {
 	cam = camWithDefaults();
 	cam.Y = 1.68f;	// Player eyes height
 
-	loadModels();
 	loadTextures();
 	initGameObjects();
 
