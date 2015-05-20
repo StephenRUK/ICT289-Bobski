@@ -4,7 +4,7 @@
 #include "Includes.h"
 
 typedef struct Model {
-	GLfloat* vertices;
+	vertex3* vertices;
 	int verticesLength;
 
 	GLfloat* normals;
