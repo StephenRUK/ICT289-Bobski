@@ -10,6 +10,7 @@ void physObjSetDefaults(PhysicsObject* phys) {
 	phys->velocity[1] = 0;
 	phys->velocity[2] = 0;
 
+	phys->isKinetic = true;
 	phys->gravityFactor = 1;
 	phys->mass = 1;
 }
@@ -17,6 +18,8 @@ void physObjSetDefaults(PhysicsObject* phys) {
 void physObjUpdateVelocity(PhysicsObject* physics, float dt) {
 	float dv[3];
 	mathVector3MultiplyScalar(dt, physics->acceleration, dv);
-
 	mathVector3Add(dv, physics->velocity, physics->velocity);
+
+	// Apply gravity
+	physics->velocity[1] += physics->gravityFactor * -9.81 * dt;
 }

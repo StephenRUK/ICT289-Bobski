@@ -146,16 +146,25 @@ void loadTextures() {
 }
 
 void initGameObjects() {
-	gameObjApplyDefaultTransform(&box);
-	physObjSetDefaults(&(box.physics));
-	box.model = boxModel;	// Future: Replace with model loading method
 
+	//
+	// Box
+	//
+	gameObjApplyDefaultTransform(&box);
+	
+	box.model.vertices = boxVertices;
+	box.model.vertexCount = 36;
+	box.model.textureID = imgLoadBitmapToTexture("Texture/house.bmp");
+
+	physObjSetDefaults(&(box.physics));
 	box.physics.velocity[0] = 0;
-	box.physics.velocity[1] = -1;
+	box.physics.velocity[1] = 0;
 	box.physics.velocity[2] = 0;
 
-	box.transform.position[1] = 25;
-	mathVector3MultiplyScalar(5, box.transform.scale, box.transform.scale);
+	box.physics.gravityFactor = 1;
+
+	box.transform.position[1] = 35;
+	mathVector3MultiplyScalar(2, box.transform.scale, box.transform.scale);
 
 }
 
