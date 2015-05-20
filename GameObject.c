@@ -14,3 +14,62 @@ void gameObjUpdatePhysics(GameObject* obj, float dt) {
 	physObjUpdateVelocity(phys, dt);
 
 }
+
+void gameObjDrawModel(GameObject* obj) {
+	Model* model = &(obj->model);
+	Transform* tf = &(obj->transform);
+
+	//
+	// Apply transforms (pos,scale,rot)
+	//
+	glPushMatrix();
+
+	glTranslatef(tf->position[0], tf->position[1], tf->position[2]);
+	glScalef(tf->scale[0], tf->scale[1], tf->scale[2]);
+	
+	// Rotate around each axis.
+	// Note: Yes, we could use quaternions, but more difficult to set up
+	glRotatef(tf->rotationAngles[0], 1, 0, 0);
+	glRotatef(tf->rotationAngles[1], 0, 1, 0);
+	glRotatef(tf->rotationAngles[2], 0, 0, 1);
+
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, model->textureID);
+
+	// Load data arrays
+	glEnableClientState(GL_VERTEX_ARRAY);
+	//glEnableClientState(GL_NORMAL_ARRAY);
+	//glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+	glVertexPointer(3, GL_FLOAT, 0, model->vertices);
+	//glNormalPointer(GL_FLOAT, 0, model->normals);
+	//glTexCoordPointer(2, GL_FLOAT, 0, model->textureCoords);
+
+	glDrawArrays(GL_TRIANGLES, 0, model->vertexCount);
+
+	glDisableClientState(GL_VERTEX_ARRAY);
+	//glDisableClientState(GL_NORMAL_ARRAY);
+	//glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+
+	// Cleanup
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glDisable(GL_TEXTURE_2D);
+	
+	glPopMatrix();
+}
+
+void gameObjApplyDefaultTransform(GameObject* obj) {
+	Transform* tf = &(obj->transform);
+
+	tf->position[0] = 0;
+	tf->position[1] = 0;
+	tf->position[2] = 0;
+
+	tf->scale[0] = 1;
+	tf->scale[1] = 1;
+	tf->scale[2] = 1;
+
+	tf->rotationAngles[0] = 0;
+	tf->rotationAngles[1] = 0;
+	tf->rotationAngles[2] = 0;
+}

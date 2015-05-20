@@ -30,8 +30,9 @@ typedef struct GameObject {
 	//int childrenLength;
 } GameObject;
 
+void gameObjApplyDefaultTransform(GameObject* obj);
 
-void gameObjUpdatePhysics(GameObject* obj);
+void gameObjUpdatePhysics(GameObject* obj, float dt);
 
 void gameObjDrawModel(GameObject* obj);
 
