@@ -11,7 +11,14 @@ void gameObjUpdatePhysics(GameObject* obj, float dt) {
 	mathVector3Add(deltaPos, transform->position, transform->position);
 
 	// 2 - Update velocity
-	physObjUpdateVelocity(phys, dt);
+	float dv[3];
+	mathVector3MultiplyScalar(dt, phys->acceleration, dv);
+	mathVector3Add(dv, phys->velocity, phys->velocity);
+
+	// Apply gravity
+	phys->velocity[1] += phys->gravityFactor * -9.81 * dt;
+
+	printf("Velocity: %f", phys->velocity);
 
 }
 
@@ -39,17 +46,17 @@ void gameObjDrawModel(GameObject* obj) {
 	// Load data arrays
 	glEnableClientState(GL_VERTEX_ARRAY);
 	//glEnableClientState(GL_NORMAL_ARRAY);
-	//glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	glVertexPointer(3, GL_FLOAT, 0, model->vertices);
 	//glNormalPointer(GL_FLOAT, 0, model->normals);
-	//glTexCoordPointer(2, GL_FLOAT, 0, model->textureCoords);
+	glTexCoordPointer(2, GL_FLOAT, 0, model->textureCoords);
 
 	glDrawArrays(GL_TRIANGLES, 0, model->vertexCount);
 
 	glDisableClientState(GL_VERTEX_ARRAY);
 	//glDisableClientState(GL_NORMAL_ARRAY);
-	//glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	// Cleanup
 	glBindTexture(GL_TEXTURE_2D, 0);

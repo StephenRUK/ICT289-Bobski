@@ -25,11 +25,4 @@ typedef struct PhysicsObject {
 
 void physObjSetDefaults(PhysicsObject* phys);
 
-void physObjUpdateVelocity(PhysicsObject* physics, float dt);
-
-//void physObjApplyGravity(PhysicsObject* physics);
-//void physObjApplyForce(PhysicsObject* physics, vec3 force);
-//bool physObjCheckForCollision(PhysicsObject* a, PhysicsObject* b);
-//void physObjResolveCollision(PhysicsObject* a, PhysicsObject* b);
-
 #endif
