@@ -2,7 +2,7 @@
 #define GAMEOBJECT_H
 
 #include "Includes.h"
-//#include "Physics.h"
+#include "Physics/PhysicsObject.h"
 
 typedef struct Model {
 	GLfloat* vertices;
@@ -28,6 +28,7 @@ typedef struct Transform {
 typedef struct GameObject {
 	Model model;
 	Transform transform;
+	PhysicsObject physics;
 
 	//GameObject** children;
 	//int childrenLength;
