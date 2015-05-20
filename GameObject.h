@@ -2,6 +2,7 @@
 #define GAMEOBJECT_H
 
 #include "Includes.h"
+#include "Transform.h"
 #include "Physics/PhysicsObject.h"
 
 typedef struct Model {
@@ -13,14 +14,6 @@ typedef struct Model {
 	GLfloat* textureCoords;
 } Model;
 
-typedef struct Transform {
-	vec3 position;
-	vec3 scale;
-
-	vec3 rotationAngles;
-
-} Transform;
-
 typedef struct GameObject {
 	Model model;
 	Transform transform;
@@ -31,8 +24,6 @@ typedef struct GameObject {
 } GameObject;
 
 GameObject* gameObjCreate(Model* model, Transform* transform, PhysicsObject* physics);
-
-void gameObjApplyDefaultTransform(GameObject* obj);
 
 void gameObjUpdatePhysics(GameObject* obj, float dt);
 

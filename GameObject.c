@@ -62,27 +62,11 @@ void gameObjDrawModel(GameObject* obj) {
 	glPopMatrix();
 }
 
-void gameObjApplyDefaultTransform(GameObject* obj) {
-	Transform* tf = &(obj->transform);
-
-	tf->position[0] = 0;
-	tf->position[1] = 0;
-	tf->position[2] = 0;
-
-	tf->scale[0] = 1;
-	tf->scale[1] = 1;
-	tf->scale[2] = 1;
-
-	tf->rotationAngles[0] = 0;
-	tf->rotationAngles[1] = 0;
-	tf->rotationAngles[2] = 0;
-}
-
-GameObject* gameObjCreate(Model model, Transform transform, PhysicsObject physics) {
+GameObject* gameObjCreate(Model* model, Transform* transform, PhysicsObject* physics) {
 	GameObject* obj = malloc(sizeof(GameObject));
-	obj->model = model;
-	obj->transform = transform;
-	obj->physics = physics;
+	obj->model = *model;
+	obj->transform = *transform;
+	obj->physics = *physics;
 
 	return obj;
 }
