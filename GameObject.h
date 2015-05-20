@@ -6,14 +6,11 @@
 
 typedef struct Model {
 	GLfloat* vertices;
-	int verticesLength;
-
 	GLfloat* normals;
-	int normalsLength;
+	int vertexCount;
 
 	GLuint textureID;
 	GLfloat* textureCoords;
-	int textureCoordsLength;
 } Model;
 
 typedef struct Transform {
@@ -35,5 +32,7 @@ typedef struct GameObject {
 
 
 void gameObjUpdatePhysics(GameObject* obj);
+
+void gameObjDrawModel(GameObject* obj);
 
 #endif
