@@ -17,11 +17,10 @@ typedef struct Model {
 } Model;
 
 typedef struct Transform {
-	GLbyte posX, posY, posZ;
-	GLbyte scaleX, scaleY, scaleZ;
+	vec3 position;
+	vec3 scale;
 
-	GLbyte rotX, rotY, rotZ;
-	GLbyte rotAngle;
+	vec3 rotX, rotY, rotZ;
 
 } Transform;
 
