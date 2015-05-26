@@ -149,7 +149,7 @@ void mouseMoveHandler(int x, int y) {
 
 
 void loadTextures() {
-	texGround= imgLoadBitmapToTexture("Texture/piste_snow.bmp");
+	texGround= imgLoadBitmapToTexture("Resources/piste_snow.bmp");
 }
 
 void initGameObjects() {
