@@ -13,7 +13,7 @@ typedef struct Model {
 	GLfloat* textureCoords;
 	int texCoordCount;
 
-	int* indexes;
+	int* indices;
 	int indexCount;
 
 	GLuint textureID;
