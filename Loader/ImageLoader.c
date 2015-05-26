@@ -8,8 +8,7 @@ void imgLoadBitmap(char* filename, Bitmap* target) {
 	unsigned int imageSize;
 
 	unsigned char* data;
-	FILE* file;
-	fopen_s(&file, filename, "rb");
+	FILE* file = fopen(filename, "rb");
 	if (!file) return;
 
 	fread(header, 1, 54, file);
