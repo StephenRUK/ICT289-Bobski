@@ -3,16 +3,8 @@
 
 #include "Includes.h"
 #include "Transform.h"
+#include "Model.h"
 #include "Physics/PhysicsObject.h"
-
-typedef struct Model {
-	GLfloat* vertices;
-	GLfloat* normals;
-	int vertexCount;
-
-	GLuint textureID;
-	GLfloat* textureCoords;
-} Model;
 
 typedef struct GameObject {
 	Model model;
