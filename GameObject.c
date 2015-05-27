@@ -49,7 +49,7 @@ void gameObjDrawModel(GameObject* obj) {
 	glNormalPointer(GL_FLOAT, 0, model->normals);
 	glTexCoordPointer(2, GL_FLOAT, 0, model->textureCoords);
 
-	glDrawArrays(GL_POLYGON, 0, model->vertexCount);
+	glDrawArrays(GL_TRIANGLES, 0, model->vertexCount);
 
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_NORMAL_ARRAY);
