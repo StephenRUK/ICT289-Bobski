@@ -15,7 +15,7 @@ typedef struct GameObject {
 	//int childrenLength;
 } GameObject;
 
-GameObject gameObjCreate(char* modelPath, char* texturePath);
+GameObject* gameObjCreate(char* modelPath, char* texturePath);
 
 void gameObjUpdatePhysics(GameObject* obj, float dt);
 

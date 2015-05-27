@@ -18,8 +18,8 @@
 
 #include "Loader/ObjLoader.h"
 
-const int windowWidth = 800;
-const int windowHeight = 600;
+const int windowWidth = 1280;
+const int windowHeight = 720;
 
 Camera cam;
 
@@ -159,73 +159,67 @@ void initGameObjects() {
 	//
 	// Sponge!
 	//
-	Model spongebob;
-	objLoadModel(&spongebob, "Resources/spongebob.obj");
-	spongebob.textureID = imgLoadBitmapToTexture("Resources/spongebob.bmp");
-	
-	Transform spongeTrans;
-	transformSetDefaults(&spongeTrans);
-	mathVector3MultiplyScalar(2, spongeTrans.scale, spongeTrans.scale);
+	GameObject* spongebob = gameObjCreate("Resources/spongebob.obj", "Resources/spongebob.bmp");
+	mathVector3MultiplyScalar(2, spongebob->transform.scale, spongebob->transform.scale);
+	spongebob->physics.gravityFactor = 0;
 
-	PhysicsObject spongePhysics;
-	physObjSetDefaults(&spongePhysics);
-	spongePhysics.gravityFactor = 0;
-
-	GameObject* spongebobObj = gameObjCreate(&spongebob, &spongeTrans, &spongePhysics);
-
-	sceneAddItem(&scene, spongebobObj);
+	sceneAddItem(&scene, spongebob);
 
 	//
-	// Box
+	// Box 1
 	//
 
-	Model boxModel;
-	objLoadModel(&boxModel, "Resources/box.obj");
-	
-	boxModel.textureID = imgLoadBitmapToTexture("Resources/house.bmp");
+	GameObject* box1 = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
+	box1->transform.position[1] = 35;
+	mathVector3MultiplyScalar(2, box1->transform.scale, box1->transform.scale);
 
-	Transform trans;
-	transformSetDefaults(&trans);
-	trans.position[1] = 35;
-	mathVector3MultiplyScalar(2, trans.scale, trans.scale);
-
-	PhysicsObject physics;
-	physObjSetDefaults(&physics);
-
-	GameObject* box = gameObjCreate(&boxModel, &trans, &physics);
-
-	sceneAddItem(&scene, box);
+	sceneAddItem(&scene, box1);
 
 	//
 	// Box 2
 	//
-	transformSetDefaults(&trans);
-	trans.position[0] = -10;
-	trans.position[1] = 15;
-	mathVector3MultiplyScalar(5, trans.scale, trans.scale);
 
-	physObjSetDefaults(&physics);
-	physics.acceleration[0] = -0.5;
+	GameObject* box2 = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
+	
+	box2->transform.position[0] = -10;
+	box2->transform.position[1] = 15;
+	mathVector3MultiplyScalar(5, box2->transform.scale, box2->transform.scale);
 
-	GameObject* box2 = gameObjCreate(&boxModel, &trans, &physics);
+	box2->physics.acceleration[0] = -0.5;
 
 	sceneAddItem(&scene, box2);
 
 	//
 	// Box 3
 	//
-	transformSetDefaults(&trans);
-	trans.position[0] = 25;
-	trans.position[1] = 15;
-	mathVector3MultiplyScalar(5, trans.scale, trans.scale);
 
-	physObjSetDefaults(&physics);
-	physics.acceleration[1] = 9.81f;	// Cancels out gravity, so just "hovers"
 
-	GameObject* box3 = gameObjCreate(&boxModel, &trans, &physics);
+	GameObject* box3 = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
+
+	box3->transform.position[0] = 25;
+	box3->transform.position[1] = 15;
+	mathVector3MultiplyScalar(5, box3->transform.scale, box3->transform.scale);
+
+	box3->physics.gravityFactor = 0;
 
 	sceneAddItem(&scene, box3);
 
+	//
+	// Wall
+	//
+
+	GameObject* wall = gameObjCreate("Resources/wall.obj", "Resources/wall.bmp");
+
+	wall->transform.position[0] = -10;
+	wall->transform.position[1] = 0;
+	wall->transform.position[2] = -20;
+	wall->transform.rotationAngles[1] = 90.0f;
+	mathVector3MultiplyScalar(0.05, wall->transform.scale, wall->transform.scale);
+
+	wall->physics.isKinetic = 0;
+	wall->physics.gravityFactor = 0;
+
+	sceneAddItem(&scene, wall);
 }
 
 void idle() {
@@ -235,7 +229,7 @@ void idle() {
 void init() {
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
 	glutInitWindowSize(windowWidth, windowHeight);
-	glutCreateWindow("ICT289 Topic  - 3D houses n grass");
+	glutCreateWindow("Project Bobski (alpha)");
 
 	glutDisplayFunc(display);
 	glutSpecialFunc(keyFunc);

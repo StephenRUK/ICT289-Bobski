@@ -69,8 +69,8 @@ void gameObjDrawModel(GameObject* obj) {
 * Loads a model from an OBJ file, and a BMP texture.
 * Transform and physics defaults are loaded.
 */
-GameObject gameObjCreate(char* modelPath, char* texturePath) {
-	GameObject obj;
+GameObject* gameObjCreate(char* modelPath, char* texturePath) {
+	GameObject* obj = malloc(sizeof(GameObject));
 	
 	Model model;
 	objLoadModel(&model, modelPath);
@@ -82,9 +82,9 @@ GameObject gameObjCreate(char* modelPath, char* texturePath) {
 	PhysicsObject physics;
 	physObjSetDefaults(&physics);
 
-	obj.model = model;
-	obj.transform = trans;
-	obj.physics = physics;
+	obj->model = model;
+	obj->transform = trans;
+	obj->physics = physics;
 	
 	return obj;
 }
