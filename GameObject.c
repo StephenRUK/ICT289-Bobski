@@ -4,6 +4,7 @@ void gameObjUpdatePhysics(GameObject* obj, float dt) {
 	Transform* transform = &(obj->transform);
 	PhysicsObject* phys = &(obj->physics);
 
+	if (!phys->isKinetic) return;
 
 	// 1 - Update position
 	vec3 deltaPos;
