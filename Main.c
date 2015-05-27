@@ -196,9 +196,10 @@ void initGameObjects() {
 
 	GameObject* box3 = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
 
-	box3->transform.position[0] = 25;
-	box3->transform.position[1] = 15;
-	mathVector3MultiplyScalar(5, box3->transform.scale, box3->transform.scale);
+	box3->transform.position[0] = -10;
+	box3->transform.position[1] = 0;
+	box3->transform.position[2] = -14;
+	mathVector3MultiplyScalar(4, box3->transform.scale, box3->transform.scale);
 
 	box3->physics.gravityFactor = 0;
 
