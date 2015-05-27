@@ -57,9 +57,9 @@ void objLoadModel(Model* model, char* filePath, int elementSize) {
 	// Allocate memory for buffers
 	//
 
-	GLfloat* tempVertices = malloc(vertexCount * sizeof(vertex3));
-	GLfloat* tempNormals = malloc(normalCount * sizeof(vertex3));
-	GLfloat* tempTexCoords = malloc(texCoordCount * 2 * sizeof(GLfloat));
+	vertex3* tempVertices = malloc(vertexCount * sizeof(vertex3));
+	vertex3* tempNormals = malloc(normalCount * sizeof(vertex3));
+	vertex2* tempTexCoords = malloc(texCoordCount * sizeof(vertex2));
 	int* tempIndices = malloc(elementCount * 3 * elementSize * sizeof(int));	// *3 for vertex/texturecoordinate/normal
 
 	//
@@ -79,29 +79,33 @@ void objLoadModel(Model* model, char* filePath, int elementSize) {
 		if (lineVals[0] == 'v' && lineVals[1] == '\0') {	// Vertex
 
 			lineVals = strtok(NULL, coordDelimiter);	// Fetch first value
+			int dimension = 0;	// Choose X, Y, Z of the vertex
 			while (lineVals != NULL) {
-				tempVertices[vertexIndex] = strtof(lineVals, NULL);
-				vertexIndex++;
+				tempVertices[vertexIndex][dimension] = strtof(lineVals, NULL);
+				dimension++;
 				lineVals = strtok(NULL, coordDelimiter);	// Fetch next value
 			}
+			vertexIndex++;
 
 		} else if (lineVals[0] == 'v' && lineVals[1] == 'n') {	// Normal
 
 			lineVals = strtok(NULL, coordDelimiter);	// Fetch first value
+			int dimension = 0;	// Choose X, Y, Z of the normal
 			while (lineVals != NULL) {
-				tempNormals[normalIndex] = strtof(lineVals, NULL);
-				normalIndex++;
+				tempNormals[normalIndex][dimension] = strtof(lineVals, NULL);
+				dimension++;
 				lineVals = strtok(NULL, coordDelimiter);	// Fetch next value
 			}
+			normalIndex++;
 
 		} else if (lineVals[0] == 'v' && lineVals[1] == 't') {	// Texture Coordinate
 
 			lineVals = strtok(NULL, coordDelimiter);	// Fetch 'U' value
-			tempTexCoords[texCoordIndex] = strtof(lineVals, NULL);
-			texCoordIndex++;
+			tempTexCoords[texCoordIndex][0] = strtof(lineVals, NULL);
 
 			lineVals = strtok(NULL, coordDelimiter);	// Fetch 'V' value
-			tempTexCoords[texCoordIndex] = strtof(lineVals, NULL);
+			tempTexCoords[texCoordIndex][1] = strtof(lineVals, NULL);
+
 			texCoordIndex++;
 
 		} else if (lineVals[0] == 'f') {	// Element (face)
@@ -143,7 +147,7 @@ void objLoadModel(Model* model, char* filePath, int elementSize) {
 
 	model->vertices = malloc(preparedVertCount * sizeof(vertex3));
 	model->normals = malloc(preparedVertCount * sizeof(vertex3));
-	model->textureCoords = malloc(preparedVertCount * 2 * sizeof(GLfloat));
+	model->textureCoords = malloc(preparedVertCount * sizeof(vertex2));
 
 	//
 	// Prepare data for OpenGL. Number of verts,normals and texture coords must be the same, with matching indices for each attribute.
@@ -158,9 +162,9 @@ void objLoadModel(Model* model, char* filePath, int elementSize) {
 		int texCoordIndex = tempIndices[3 * j + 1];
 		int normalIndex = tempIndices[3 * j + 2];
 
-		memcpy(&(model->vertices[3 * j]), &(tempVertices[3 * vertexIndex]), sizeof(vertex3));
-		memcpy(&(model->textureCoords[2 * j]), &(tempTexCoords[2 * texCoordIndex]), 2*sizeof(GLfloat));
-		memcpy(&(model->normals[3 * j]), &(tempNormals[3 * normalIndex]), sizeof(vertex3));
+		memcpy(&(model->vertices[j]), &(tempVertices[vertexIndex]), sizeof(vertex3));
+		memcpy(&(model->textureCoords[j]), &(tempTexCoords[texCoordIndex]), sizeof(vertex2));
+		memcpy(&(model->normals[j]), &(tempNormals[normalIndex]), sizeof(vertex3));
 
 	}
 	
