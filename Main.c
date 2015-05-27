@@ -16,6 +16,8 @@
 #include "GameObject.h"
 #include "Scene.h"
 
+#include "Loader/ObjLoader.h"
+
 const int windowWidth = 800;
 const int windowHeight = 600;
 
@@ -155,18 +157,31 @@ void loadTextures() {
 void initGameObjects() {
 
 	//
+	// Sponge!
+	//
+	Model spongebob;
+	objLoadModel(&spongebob, "Resources/spongebob.obj", 4);
+	spongebob.textureID = imgLoadBitmapToTexture("Resources/spongebob.bmp");
+	
+	Transform spongeTrans;
+	transformSetDefaults(&spongeTrans);
+
+	PhysicsObject spongePhysics;
+	physObjSetDefaults(&spongePhysics);
+	spongePhysics.gravityFactor = 0;
+
+	GameObject* spongebobObj = gameObjCreate(&spongebob, &spongeTrans, &spongePhysics);
+
+	sceneAddItem(&scene, spongebobObj);
+
+	//
 	// Box
 	//
 
-	/* Future change:
-	Model model;
-	loadModel(&model, objFile, texFile);
-	*/
-	
 	Model boxModel;
-	boxModel.vertices = boxVertices;
-	boxModel.vertexCount = 36;
-	boxModel.textureID = imgLoadBitmapToTexture("Texture/house.bmp");
+	objLoadModel(&boxModel, "Resources/box.obj", 4);
+	
+	boxModel.textureID = imgLoadBitmapToTexture("Resources/house.bmp");
 
 	Transform trans;
 	transformSetDefaults(&trans);
@@ -204,7 +219,7 @@ void initGameObjects() {
 	mathVector3MultiplyScalar(5, trans.scale, trans.scale);
 
 	physObjSetDefaults(&physics);
-	physics.acceleration[1] = 9.81;	// Cancels out gravity, so just "hovers"
+	physics.acceleration[1] = 9.81f;	// Cancels out gravity, so just "hovers"
 
 	GameObject* box3 = gameObjCreate(&boxModel, &trans, &physics);
 
