@@ -8,13 +8,7 @@ typedef struct Model {
 	int vertexCount;
 
 	GLfloat* normals;
-	int normalCount;
-
 	GLfloat* textureCoords;
-	int texCoordCount;
-
-	int* indices;
-	int indexCount;
 
 	GLuint textureID;
 
