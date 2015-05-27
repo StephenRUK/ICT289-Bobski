@@ -62,6 +62,35 @@ void gameObjDrawModel(GameObject* obj) {
 	glPopMatrix();
 }
 
+/*
+* gameObjCreate
+*
+* Constructs a new game object with all the necessities.
+* Loads a model from an OBJ file, and a BMP texture.
+* Transform and physics defaults are loaded.
+*/
+GameObject gameObjCreate(char* modelPath, char* texturePath) {
+	GameObject obj;
+	
+	Model model;
+	objLoadModel(&model, modelPath);
+	model.textureID = imgLoadBitmapToTexture(texturePath);
+
+	Transform trans;
+	transformSetDefaults(&trans);
+
+	PhysicsObject physics;
+	physObjSetDefaults(&physics);
+
+	obj.model = model;
+	obj.transform = trans;
+	obj.physics = physics;
+	
+	return obj;
+}
+
+/*
+// Old crappy version of gameObjCreate which requires some manual setup
 GameObject* gameObjCreate(Model* model, Transform* transform, PhysicsObject* physics) {
 	GameObject* obj = malloc(sizeof(GameObject));
 	obj->model = *model;
@@ -70,3 +99,4 @@ GameObject* gameObjCreate(Model* model, Transform* transform, PhysicsObject* phy
 
 	return obj;
 }
+*/
