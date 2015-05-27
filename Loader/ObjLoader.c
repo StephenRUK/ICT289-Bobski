@@ -153,29 +153,26 @@ void objLoadModel(Model* model, char* filePath, int elementSize) {
 
 	int j;
 	for (j = 0; j < preparedVertCount; j++) {
-		// Get 3 indices at a time
+		// Get 3 indices at a time. Order is important!
 		int vertexIndex = tempIndices[3*j];
-		int normalIndex = tempIndices[3*j + 1];
-		int texCoordIndex = tempIndices[3*j + 2];
+		int texCoordIndex = tempIndices[3 * j + 1];
+		int normalIndex = tempIndices[3 * j + 2];
 
-		memcpy(&(model->vertices[3*j]), &(tempVertices[3*vertexIndex]), sizeof(vertex3));
+		memcpy(&(model->vertices[3 * j]), &(tempVertices[3 * vertexIndex]), sizeof(vertex3));
+		memcpy(&(model->textureCoords[2 * j]), &(tempTexCoords[2 * texCoordIndex]), 2*sizeof(GLfloat));
+		memcpy(&(model->normals[3 * j]), &(tempNormals[3 * normalIndex]), sizeof(vertex3));
 
-		/*
-		model->vertices[j] = tempVertices[vertexIndex];
-		model->vertices[j + 1] = tempVertices[vertexIndex+1];
-		model->vertices[j + 2] = tempVertices[vertexIndex + 2];
-		*/
 	}
-	
-
-	// Store values from temp arrays in the model
-
-
 	
 
 	//
 	// Cleanup
 	//
+
+	free(tempVertices);
+	free(tempNormals);
+	free(tempTexCoords);
+	free(tempIndices);
 
 	fclose(objFile);
 
