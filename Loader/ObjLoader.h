@@ -3,6 +3,6 @@
 
 #include "../Model.h"
 
-void objLoadModel(Model* model, char* filePath, int elementSize);
+void objLoadModel(Model* model, char* filePath);
 
 #endif

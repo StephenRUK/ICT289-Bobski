@@ -16,8 +16,9 @@
 *	- OBJ Format specification
 *		http://en.wikipedia.org/wiki/Wavefront_.obj_file#Face_Elements
 **/
-void objLoadModel(Model* model, char* filePath, int elementSize) {
-	// TODO Replace elementSize var with code that counts an element's entries
+void objLoadModel(Model* model, char* filePath) {
+	
+	const int elementSize = 3;	// Size of elements in OBJ file. We use triangles!
 
 	FILE* objFile;
 	objFile = fopen(filePath, "r");
