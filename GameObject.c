@@ -42,18 +42,18 @@ void gameObjDrawModel(GameObject* obj) {
 
 	// Load data arrays
 	glEnableClientState(GL_VERTEX_ARRAY);
-	//glEnableClientState(GL_NORMAL_ARRAY);
-	//glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	glVertexPointer(3, GL_FLOAT, 0, model->vertices);
-	//glNormalPointer(GL_FLOAT, 0, model->normals);
-	//glTexCoordPointer(2, GL_FLOAT, 0, model->textureCoords);
+	glNormalPointer(GL_FLOAT, 0, model->normals);
+	glTexCoordPointer(2, GL_FLOAT, 0, model->textureCoords);
 
-	glDrawArrays(GL_TRIANGLES, 0, model->vertexCount);
+	glDrawArrays(GL_POLYGON, 0, model->vertexCount);
 
 	glDisableClientState(GL_VERTEX_ARRAY);
-	//glDisableClientState(GL_NORMAL_ARRAY);
-	//glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	glDisableClientState(GL_NORMAL_ARRAY);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	// Cleanup
 	glBindTexture(GL_TEXTURE_2D, 0);
