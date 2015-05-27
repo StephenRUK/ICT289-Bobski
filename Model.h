@@ -4,11 +4,11 @@
 #include "Includes.h"
 
 typedef struct Model {
-	GLfloat* vertices;
+	vertex3* vertices;
 	int vertexCount;
 
-	GLfloat* normals;
-	GLfloat* textureCoords;
+	vertex3* normals;
+	vertex2* textureCoords;
 
 	GLuint textureID;
 
