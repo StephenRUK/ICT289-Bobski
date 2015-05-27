@@ -160,11 +160,12 @@ void initGameObjects() {
 	// Sponge!
 	//
 	Model spongebob;
-	objLoadModel(&spongebob, "Resources/spongebob.obj", 4);
+	objLoadModel(&spongebob, "Resources/spongebob.obj");
 	spongebob.textureID = imgLoadBitmapToTexture("Resources/spongebob.bmp");
 	
 	Transform spongeTrans;
 	transformSetDefaults(&spongeTrans);
+	mathVector3MultiplyScalar(2, spongeTrans.scale, spongeTrans.scale);
 
 	PhysicsObject spongePhysics;
 	physObjSetDefaults(&spongePhysics);
@@ -179,7 +180,7 @@ void initGameObjects() {
 	//
 
 	Model boxModel;
-	objLoadModel(&boxModel, "Resources/box.obj", 4);
+	objLoadModel(&boxModel, "Resources/box.obj");
 	
 	boxModel.textureID = imgLoadBitmapToTexture("Resources/house.bmp");
 
