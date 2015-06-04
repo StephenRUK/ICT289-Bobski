@@ -1,5 +1,11 @@
 #include "GameObject.h"
 
+/*
+* gameObjUpdatePhysics
+*
+* Updates the position, velocity & acceleration of a given object.
+* Collisions are not considered here. dt determines magnitude of calculations.
+*/
 void gameObjUpdatePhysics(GameObject* obj, float dt) {
 	Transform* transform = &(obj->transform);
 	PhysicsObject* phys = &(obj->physics);
@@ -13,18 +19,30 @@ void gameObjUpdatePhysics(GameObject* obj, float dt) {
 	mathVector3MultiplyScalar(dt, phys->velocity, deltaPos);
 	mathVector3Add(deltaPos, transform->position, transform->position);
 
-	// 2 - Update velocity
-	
+	// 2 - Update velocity	
 	mathVector3MultiplyScalar(dt, phys->acceleration, dv);
 	mathVector3Add(dv, phys->velocity, phys->velocity);
 
-	// Apply gravity
+	// 3 - Apply gravity
 	phys->velocity[1] += phys->gravityFactor * -9.81f * dt;
+
+	// 4 - Apply friction (subtract from acceleration)
+	// A) Make sure to apply friction opposite to the direction of acceleration.
+	// B) Make sure not to get a negative velocity by applying friction. Only if object is moving.
+
 }
 
+/*
+* gameObjDrawModel
+*
+* Draws the model of a GameObject on screen.
+* A model and texture must have already been loaded.
+*/
 void gameObjDrawModel(GameObject* obj) {
 	Model* model = &(obj->model);
 	Transform* tf = &(obj->transform);
+
+	if (model == NULL) return;
 
 	//
 	// Apply transforms (pos,scale,rot)
