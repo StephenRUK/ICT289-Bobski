@@ -4,20 +4,22 @@ void gameObjUpdatePhysics(GameObject* obj, float dt) {
 	Transform* transform = &(obj->transform);
 	PhysicsObject* phys = &(obj->physics);
 
+	vec3 deltaPos;
+	float dv[3];
+
 	if (!phys->isKinetic) return;
 
 	// 1 - Update position
-	vec3 deltaPos;
 	mathVector3MultiplyScalar(dt, phys->velocity, deltaPos);
 	mathVector3Add(deltaPos, transform->position, transform->position);
 
 	// 2 - Update velocity
-	float dv[3];
+	
 	mathVector3MultiplyScalar(dt, phys->acceleration, dv);
 	mathVector3Add(dv, phys->velocity, phys->velocity);
 
 	// Apply gravity
-	phys->velocity[1] += phys->gravityFactor * -9.81 * dt;
+	phys->velocity[1] += phys->gravityFactor * -9.81f * dt;
 }
 
 void gameObjDrawModel(GameObject* obj) {
@@ -71,16 +73,18 @@ void gameObjDrawModel(GameObject* obj) {
 * Transform and physics defaults are loaded.
 */
 GameObject* gameObjCreate(char* modelPath, char* texturePath) {
-	GameObject* obj = malloc(sizeof(GameObject));
-	
+	GameObject* obj;
+	Transform trans;
+	PhysicsObject physics;
 	Model model;
+
+	obj = malloc(sizeof(GameObject));
+	
 	objLoadModel(&model, modelPath);
 	model.textureID = imgLoadBitmapToTexture(texturePath);
 
-	Transform trans;
 	transformSetDefaults(&trans);
 
-	PhysicsObject physics;
 	physObjSetDefaults(&physics);
 
 	obj->model = model;

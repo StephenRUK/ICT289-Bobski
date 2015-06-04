@@ -40,6 +40,8 @@ void imgLoadBitmap(char* filename, Bitmap* target) {
 */
 GLuint imgLoadBitmapToTexture(char* filename) {
 	Bitmap tex;
+	GLuint textureID;
+
 	imgLoadBitmap(filename, &tex);
 
 	//
@@ -47,7 +49,6 @@ GLuint imgLoadBitmapToTexture(char* filename) {
 	// Set our default parameters for textures.
 	// Texture parameters can be modified later by binding again.
 	//
-	GLuint textureID;
 	glGenTextures(1, &textureID);
 
 	glBindTexture(GL_TEXTURE_2D, textureID);

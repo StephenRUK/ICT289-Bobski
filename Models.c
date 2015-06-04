@@ -1,5 +1,6 @@
 #include "Includes.h"
 
+/*
 void drawHouse(GLfloat x, GLfloat y, GLfloat z, GLfloat scaleX, GLfloat scaleY, GLfloat scaleZ, GLuint houseTexID, GLuint roofTexID) {
 	vec3 verts[] = {
 		// Front
@@ -129,6 +130,7 @@ void drawHouse(GLfloat x, GLfloat y, GLfloat z, GLfloat scaleX, GLfloat scaleY, 
 
 	glPopMatrix();
 }
+*/
 
 void drawGround(GLuint textureID) {
 	vec3 verts[4] = {

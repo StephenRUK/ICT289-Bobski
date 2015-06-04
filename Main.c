@@ -5,6 +5,8 @@
 *   Authors: Stephen Randles
 */
 
+#define FREEGLUT_LIB_PRAGMAS 1
+
 #include <stdio.h>
 #include <math.h>
 
@@ -35,7 +37,7 @@ void doPhysics() {
 
 	int newElapsedTime = glutGet(GLUT_ELAPSED_TIME);
 	dt = (newElapsedTime - elapsedTime) / 1000;
-	elapsedTime = newElapsedTime;
+	elapsedTime = (float)newElapsedTime;
 
 	//
 	// Loop through GameObjects
@@ -154,11 +156,12 @@ void loadTextures() {
 }
 
 void initGameObjects() {
+	GameObject *box1, *box2, *box3, *spongebob, *wall;
 
 	//
 	// Sponge!
 	//
-	GameObject* spongebob = gameObjCreate("Resources/spongebob.obj", "Resources/spongebob.bmp");
+	spongebob = gameObjCreate("Resources/spongebob.obj", "Resources/spongebob.bmp");
 	mathVector3MultiplyScalar(2, spongebob->transform.scale, spongebob->transform.scale);
 	spongebob->physics.gravityFactor = 0;
 
@@ -168,7 +171,7 @@ void initGameObjects() {
 	// Box 1
 	//
 
-	GameObject* box1 = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
+	box1 = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
 	box1->transform.position[1] = 35;
 	mathVector3MultiplyScalar(2, box1->transform.scale, box1->transform.scale);
 
@@ -178,7 +181,7 @@ void initGameObjects() {
 	// Box 2
 	//
 
-	GameObject* box2 = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
+	box2 = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
 	
 	box2->transform.position[0] = -10;
 	box2->transform.position[1] = 15;
@@ -193,7 +196,7 @@ void initGameObjects() {
 	//
 
 
-	GameObject* box3 = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
+	box3 = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
 
 	box3->transform.position[0] = -10;
 	box3->transform.position[1] = 0;
@@ -208,13 +211,13 @@ void initGameObjects() {
 	// Wall
 	//
 
-	GameObject* wall = gameObjCreate("Resources/wall.obj", "Resources/wall.bmp");
+	wall = gameObjCreate("Resources/wall.obj", "Resources/wall.bmp");
 
 	wall->transform.position[0] = -10;
 	wall->transform.position[1] = 0;
 	wall->transform.position[2] = -20;
 	wall->transform.rotationAngles[1] = 90.0f;
-	mathVector3MultiplyScalar(0.05, wall->transform.scale, wall->transform.scale);
+	mathVector3MultiplyScalar(0.05f, wall->transform.scale, wall->transform.scale);
 
 	wall->physics.isKinetic = 0;
 	wall->physics.gravityFactor = 0;

@@ -1,6 +1,7 @@
 #include "ObjLoader.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 /**
 * OBJ File Loader
@@ -18,9 +19,32 @@
 **/
 void objLoadModel(Model* model, char* filePath) {
 	
+	// TODO Replace strtof with workaround for strtok :-(
+
 	const int elementSize = 3;	// Size of elements in OBJ file. We use triangles!
 
+	int vertexCount = 0, normalCount = 0, texCoordCount = 0, elementCount = 0;
+	int preparedVertCount = 0;	// Stores number of vertices after data preparation. Not number of verts in OBJ file.
+
+	char buf[256];
+	char entryType[2];
+
 	FILE* objFile;
+
+	vertex3* tempVertices;
+	vertex3* tempNormals;
+	vertex2* tempTexCoords;
+	int* tempIndices;
+
+	int vertexIndex = 0, normalIndex = 0, texCoordIndex = 0, elementIndex = 0;
+	char *lineVals, *coordDelimiter, *elimDelimiter;
+
+	int dimension;	// x/y/z coordinate for loops
+	int j;	// loop index
+
+
+
+
 	objFile = fopen(filePath, "r");
 
 	if (ferror(stdin)) {
@@ -28,11 +52,6 @@ void objLoadModel(Model* model, char* filePath) {
 		return;
 	}
 
-	int vertexCount = 0, normalCount = 0, texCoordCount = 0, elementCount = 0;
-	int preparedVertCount = 0;	// Stores number of vertices after data preparation. Not number of verts in OBJ file.
-
-	char buf[256];
-	char entryType[2];
 
 	//
 	// Count number of verts etc.
@@ -58,21 +77,18 @@ void objLoadModel(Model* model, char* filePath) {
 	// Allocate memory for buffers
 	//
 
-	vertex3* tempVertices = malloc(vertexCount * sizeof(vertex3));
-	vertex3* tempNormals = malloc(normalCount * sizeof(vertex3));
-	vertex2* tempTexCoords = malloc(texCoordCount * sizeof(vertex2));
-	int* tempIndices = malloc(elementCount * 3 * elementSize * sizeof(int));	// *3 for vertex/texturecoordinate/normal
+	tempVertices = malloc(vertexCount * sizeof(vertex3));
+	tempNormals = malloc(normalCount * sizeof(vertex3));
+	tempTexCoords = malloc(texCoordCount * sizeof(vertex2));
+	tempIndices = malloc(elementCount * 3 * elementSize * sizeof(int));	// *3 for vertex/texturecoordinate/normal
 
 	//
 	// Read in values to buffers
 	//
 	rewind(objFile);
 
-	int vertexIndex = 0, normalIndex = 0, texCoordIndex = 0, elementIndex = 0;
-
-	char* lineVals;
-	char* coordDelimiter = " ";
-	char* elimDelimiter = "/";
+	coordDelimiter = " ";
+	elimDelimiter = "/";
 
 	while (fgets(buf, sizeof(buf), objFile)) {
 		lineVals = strtok(buf, coordDelimiter);	// Get tokens delimited by spaces, beginning with the type (v/vn/vt/f)
@@ -80,9 +96,9 @@ void objLoadModel(Model* model, char* filePath) {
 		if (lineVals[0] == 'v' && lineVals[1] == '\0') {	// Vertex
 
 			lineVals = strtok(NULL, coordDelimiter);	// Fetch first value
-			int dimension = 0;	// Choose X, Y, Z of the vertex
+			dimension = 0;	// Choose X, Y, Z of the vertex
 			while (lineVals != NULL) {
-				tempVertices[vertexIndex][dimension] = strtof(lineVals, NULL);
+				tempVertices[vertexIndex][dimension] = (float)strtod(lineVals, NULL);
 				dimension++;
 				lineVals = strtok(NULL, coordDelimiter);	// Fetch next value
 			}
@@ -91,9 +107,9 @@ void objLoadModel(Model* model, char* filePath) {
 		} else if (lineVals[0] == 'v' && lineVals[1] == 'n') {	// Normal
 
 			lineVals = strtok(NULL, coordDelimiter);	// Fetch first value
-			int dimension = 0;	// Choose X, Y, Z of the normal
+			dimension = 0;	// Choose X, Y, Z of the normal
 			while (lineVals != NULL) {
-				tempNormals[normalIndex][dimension] = strtof(lineVals, NULL);
+				tempNormals[normalIndex][dimension] = (float)strtod(lineVals, NULL);
 				dimension++;
 				lineVals = strtok(NULL, coordDelimiter);	// Fetch next value
 			}
@@ -102,10 +118,10 @@ void objLoadModel(Model* model, char* filePath) {
 		} else if (lineVals[0] == 'v' && lineVals[1] == 't') {	// Texture Coordinate
 
 			lineVals = strtok(NULL, coordDelimiter);	// Fetch 'U' value
-			tempTexCoords[texCoordIndex][0] = strtof(lineVals, NULL);
+			tempTexCoords[texCoordIndex][0] = (float)strtod(lineVals, NULL);
 
 			lineVals = strtok(NULL, coordDelimiter);	// Fetch 'V' value
-			tempTexCoords[texCoordIndex][1] = strtof(lineVals, NULL);
+			tempTexCoords[texCoordIndex][1] = (float)strtod(lineVals, NULL);
 
 			texCoordIndex++;
 
@@ -156,7 +172,6 @@ void objLoadModel(Model* model, char* filePath) {
 
 	// Loop element indices
 
-	int j;
 	for (j = 0; j < preparedVertCount; j++) {
 		// Get 3 indices at a time. Order is important!
 		int vertexIndex = tempIndices[3*j];
