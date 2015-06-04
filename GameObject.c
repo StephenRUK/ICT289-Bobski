@@ -93,15 +93,3 @@ GameObject* gameObjCreate(char* modelPath, char* texturePath) {
 	
 	return obj;
 }
-
-/*
-// Old crappy version of gameObjCreate which requires some manual setup
-GameObject* gameObjCreate(Model* model, Transform* transform, PhysicsObject* physics) {
-	GameObject* obj = malloc(sizeof(GameObject));
-	obj->model = *model;
-	obj->transform = *transform;
-	obj->physics = *physics;
-
-	return obj;
-}
-*/
