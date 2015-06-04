@@ -25,6 +25,13 @@ void mathVector3Add(const float a[3], const float b[3], float c[3]) {
 	}
 }
 
+void mathVector3Subtract(const float a[3], const float b[3], float c[3]) {
+	int i;
+	for (i = 0; i < 3; i++) {
+		c[i] = a[i] - b[i];
+	}
+}
+
 void mathVector3MultiplyScalar(const float scalar, const float vector[3], float result[3]) {
 	int i;
 	for (i = 0; i < 3; i++) {
