@@ -1,8 +1,15 @@
 #include "BoundingBox.h"
+#include "../Maths/MathsUtil.h"
 
+/*
+* bboxCalculateFromModel
+*
+* Calculates the bounding box from the model's vertices.
+* Doesn't incorporate scaling after loading the model.
+* Must be updated after scaling operations. (i.e. write a function to apply scaling to transform and bbox)
+*/
 BoundingBox bboxCalculateFromModel(Model* model) {
 	BoundingBox bbox;
-	
 	vec3* verts = model->vertices;
 	
 	int i;
@@ -14,7 +21,11 @@ BoundingBox bboxCalculateFromModel(Model* model) {
 		if (verts[i][1] > bbox.max[1]) bbox.max[1] = verts[i][1];	// max y
 		if (verts[i][2] < bbox.min[2]) bbox.min[2] = verts[i][2];	// min z
 		if (verts[i][2] > bbox.max[2]) bbox.max[2] = verts[i][2];	// max z
-
 	}
 
+	// Calculate centre point (max-min)/2
+	mathVector3Subtract(bbox.max, bbox.min, bbox.centre);
+	mathVector3MultiplyScalar(0.5, bbox.centre, bbox.centre);
+
+	return bbox;
 }
