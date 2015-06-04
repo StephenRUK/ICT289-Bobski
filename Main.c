@@ -45,9 +45,15 @@ void doPhysics() {
 	if (scene.first != NULL) {
 		SceneItem* item = scene.first;
 		while (item != NULL) {
+
 			gameObjUpdatePhysics(item->obj, dt);
 
-			item = item->next;
+			// Detect collisions
+
+			// Resolve collisions
+
+
+			item = item->next;	// On to next object in the scene.
 		}
 	}
 	
