@@ -12,6 +12,7 @@
 typedef struct BoundingBox {
 	vec3 min;
 	vec3 max;
+	vec3 centre;
 } BoundingBox;
 
 BoundingBox bboxCalculateFromModel(Model* model);
