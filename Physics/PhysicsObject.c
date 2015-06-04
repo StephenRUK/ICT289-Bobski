@@ -11,7 +11,7 @@ void physObjSetDefaults(PhysicsObject* phys) {
 	phys->velocity[1] = 0;
 	phys->velocity[2] = 0;
 
-	phys->isKinetic = true;
+	phys->isKinetic = 1;
 	phys->gravityFactor = 1;
 	phys->mass = 1;
 }
