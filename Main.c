@@ -112,7 +112,7 @@ void display(void) {
 }
 
 void keyFunc(int keyCode, int x, int y) {
-	float moveSpeed = 3;
+	float moveSpeed = 1;
 
 	switch (keyCode) {
 	case GLUT_KEY_LEFT:
@@ -136,6 +136,10 @@ void keyFunc2(unsigned char keyCode, int x, int y) {
 	float turnSpeed = 0.05f;
 
 	switch (keyCode) {
+
+	//
+	// Looking around. To (probably) be replaced with mouse controls.
+	//
 	case 'w':
 		camLookUp(&cam, turnSpeed);
 		break;
@@ -148,6 +152,14 @@ void keyFunc2(unsigned char keyCode, int x, int y) {
 	case 'd':
 		camLookRight(&cam, turnSpeed);
 		break;
+
+	//
+	// Throw snowball on space key press
+	//
+	case ' ':
+		// Trigger function to create snowball, set up position, init. velocity.
+		break;
+
 	}
 
 	glutPostRedisplay();
