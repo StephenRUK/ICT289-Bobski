@@ -34,8 +34,10 @@ GLuint texGround;	// Debug
 //***********************************/
 
 void doPhysics() {
+	int newElapsedTime;
+	SceneItem* item;
 
-	int newElapsedTime = glutGet(GLUT_ELAPSED_TIME);
+	newElapsedTime = glutGet(GLUT_ELAPSED_TIME);
 	dt = (newElapsedTime - elapsedTime) / 1000;
 	elapsedTime = (float)newElapsedTime;
 
@@ -43,25 +45,21 @@ void doPhysics() {
 	// Loop through GameObjects
 	//
 	if (scene.first != NULL) {
-		SceneItem* item = scene.first;
+		item = scene.first;
 		while (item != NULL) {
-
 			gameObjUpdatePhysics(item->obj, dt);
 
-			// Detect collisions
-
-			// Resolve collisions
-
-
-			item = item->next;	// On to next object in the scene.
+			item = item->next;
 		}
 	}
 	
 }
 
 void drawScene() {
+	SceneItem* item;
+
 	if (scene.first != NULL) {
-		SceneItem* item = scene.first;
+		item = scene.first;
 		while (item != NULL) {
 			gameObjDrawModel(item->obj);
 
@@ -75,6 +73,15 @@ void display(void) {
 	// Physics
 	//
 	doPhysics();
+
+
+	//
+	// Collisions
+	//
+
+	// Detect collisions
+
+	// Resolve collisions
 
 
 	//
@@ -162,73 +169,73 @@ void loadTextures() {
 }
 
 void initGameObjects() {
-	GameObject *box1, *box2, *box3, *spongebob, *wall;
+	GameObject *obj;
 
 	//
 	// Sponge!
 	//
-	spongebob = gameObjCreate("Resources/spongebob.obj", "Resources/spongebob.bmp");
-	mathVector3MultiplyScalar(2, spongebob->transform.scale, spongebob->transform.scale);
-	spongebob->physics.gravityFactor = 0;
+	obj = gameObjCreate("Resources/spongebob.obj", "Resources/spongebob.bmp");
+	mathVector3MultiplyScalar(2, obj->transform.scale, obj->transform.scale);
+	obj->physics.gravityFactor = 0;
 
-	sceneAddItem(&scene, spongebob);
+	sceneAddItem(&scene, obj);
 
 	//
 	// Box 1
 	//
 
-	box1 = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
-	box1->transform.position[1] = 35;
-	mathVector3MultiplyScalar(2, box1->transform.scale, box1->transform.scale);
+	obj = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
+	obj->transform.position[1] = 35;
+	mathVector3MultiplyScalar(2, obj->transform.scale, obj->transform.scale);
 
-	sceneAddItem(&scene, box1);
+	sceneAddItem(&scene, obj);
 
 	//
 	// Box 2
 	//
 
-	box2 = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
+	obj = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
 	
-	box2->transform.position[0] = -10;
-	box2->transform.position[1] = 15;
-	mathVector3MultiplyScalar(5, box2->transform.scale, box2->transform.scale);
+	obj->transform.position[0] = -10;
+	obj->transform.position[1] = 15;
+	mathVector3MultiplyScalar(5, obj->transform.scale, obj->transform.scale);
 
-	box2->physics.acceleration[0] = -0.5;
+	obj->physics.acceleration[0] = -0.5;
 
-	sceneAddItem(&scene, box2);
+	sceneAddItem(&scene, obj);
 
 	//
 	// Box 3
 	//
 
 
-	box3 = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
+	obj = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
 
-	box3->transform.position[0] = -10;
-	box3->transform.position[1] = 0;
-	box3->transform.position[2] = -14;
-	mathVector3MultiplyScalar(4, box3->transform.scale, box3->transform.scale);
+	obj->transform.position[0] = -10;
+	obj->transform.position[1] = 0;
+	obj->transform.position[2] = -14;
+	mathVector3MultiplyScalar(4, obj->transform.scale, obj->transform.scale);
 
-	box3->physics.gravityFactor = 0;
+	obj->physics.gravityFactor = 0;
 
-	sceneAddItem(&scene, box3);
+	sceneAddItem(&scene, obj);
 
 	//
 	// Wall
 	//
 
-	wall = gameObjCreate("Resources/wall.obj", "Resources/wall.bmp");
+	obj = gameObjCreate("Resources/wall.obj", "Resources/wall.bmp");
 
-	wall->transform.position[0] = -10;
-	wall->transform.position[1] = 0;
-	wall->transform.position[2] = -20;
-	wall->transform.rotationAngles[1] = 90.0f;
-	mathVector3MultiplyScalar(0.05f, wall->transform.scale, wall->transform.scale);
+	obj->transform.position[0] = -10;
+	obj->transform.position[1] = 0;
+	obj->transform.position[2] = -20;
+	obj->transform.rotationAngles[1] = 90.0f;
+	mathVector3MultiplyScalar(0.05f, obj->transform.scale, obj->transform.scale);
 
-	wall->physics.isKinetic = 0;
-	wall->physics.gravityFactor = 0;
+	obj->physics.isKinetic = 0;
+	obj->physics.gravityFactor = 0;
 
-	sceneAddItem(&scene, wall);
+	sceneAddItem(&scene, obj);
 }
 
 void idle() {
