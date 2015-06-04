@@ -90,6 +90,12 @@ void display(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
+	// Lighting setup (is this the right place?)
+	// 1 - Set lighting model (colour and intensity)
+	// 2 - Set light position
+	// 3 - Set and enable 'colour material'
+	// 4 - Enable lighting
+
 	gluLookAt(
 		cam.X, cam.Y, cam.Z,
 		cam.X + cam.fwdX, cam.Y + cam.fwdY, cam.Z + cam.fwdZ,
