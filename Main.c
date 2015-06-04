@@ -11,7 +11,7 @@
 #include <math.h>
 
 #include "Includes.h"
-#include "Models.h"	// Will be removed once model loader has been implemented
+#include "Models.h"
 #include "Camera.h"
 #include "Loader/ImageLoader.h"
 #include "GameObject.h"
