@@ -16,6 +16,7 @@
 #include "Loader/ImageLoader.h"
 #include "GameObject.h"
 #include "Scene.h"
+/*#include "Move.h"*/
 
 #include "Loader/ObjLoader.h"
 
@@ -24,12 +25,13 @@ const int windowHeight = 720;
 
 Camera cam;
 
+
 float elapsedTime;	// Milliseconds elapsed since application start
 float dt = 0;	// Seconds elapsed between loops
 
 SceneList scene;	// Contains all game objects in the scene
 
-GLuint texGround;	// Debug
+GLuint texGround;	
 
 //***********************************/
 
@@ -47,13 +49,23 @@ void doPhysics() {
 	if (scene.first != NULL) {
 		item = scene.first;
 		while (item != NULL) {
-			gameObjUpdatePhysics(item->obj, dt);
-
+			gameObjUpdatePhysics(item->obj, dt, cam);
+			
 			item = item->next;
 		}
 	}
 	
 }
+
+/*void doMove() {
+	int newestElapsedTime;
+	int x = 0;
+
+	do{
+		x = x++;
+		sponge->transform.position[0] = -1;
+	} while (x <= 5);
+}*/
 
 void drawScene() {
 	SceneItem* item;
@@ -73,6 +85,7 @@ void display(void) {
 	// Physics
 	//
 	doPhysics();
+	/*doMove();*/
 
 
 	//
@@ -113,27 +126,44 @@ void display(void) {
 
 void keyFunc(int keyCode, int x, int y) {
 	float moveSpeed = 1;
-
+	
 	switch (keyCode) {
 	case GLUT_KEY_LEFT:
-		camStrafeLeft(&cam, moveSpeed);
+	camStrafeLeft(&cam, moveSpeed);
+	break;
+	case GLUT_KEY_RIGHT:
+	camStrafeRight(&cam, moveSpeed);
+	break;
+	case GLUT_KEY_UP:
+	camWalkForwards(&cam, moveSpeed);
+	break;
+	case GLUT_KEY_DOWN:
+	camWalkBackwards(&cam, moveSpeed);
+	break;
+	}
+
+	/*switch (keyCode) {
+	case GLUT_KEY_LEFT:
+		movStrafeLeft(&sponge, moveSpeed);
 		break;
 	case GLUT_KEY_RIGHT:
-		camStrafeRight(&cam, moveSpeed);
+		movStrafeRight(&sponge, moveSpeed);
 		break;
 	case GLUT_KEY_UP:
-		camWalkForwards(&cam, moveSpeed);
+		movWalkForwards(&sponge, moveSpeed);
 		break;
 	case GLUT_KEY_DOWN:
-		camWalkBackwards(&cam, moveSpeed);
+		movWalkBackwards(&sponge, moveSpeed);
 		break;
-	}
+	}*/
+
+	
 
 	glutPostRedisplay();		
 }
 
 void keyFunc2(unsigned char keyCode, int x, int y) {
-	float turnSpeed = 0.05f;
+	float turnSpeed = 0.025f;
 
 	switch (keyCode) {
 
@@ -187,12 +217,18 @@ void loadTextures() {
 }
 
 void initGameObjects() {
+
 	GameObject *obj;
+	
 
 	//
 	// Sponge!
 	//
 	obj = gameObjCreate("Resources/spongebob.obj", "Resources/spongebob.bmp");
+	obj->transform.position[0] = cam.X;
+	obj->transform.position[1] = cam.Y;
+	obj->transform.position[2] = cam.Z;
+	obj->physics.notProtag = 0;	//Sets as protag --> Defines movement
 	mathVector3MultiplyScalar(2, obj->transform.scale, obj->transform.scale);
 	obj->physics.gravityFactor = 0;
 

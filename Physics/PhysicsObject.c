@@ -14,4 +14,5 @@ void physObjSetDefaults(PhysicsObject* phys) {
 	phys->isKinetic = 1;
 	phys->gravityFactor = 1;
 	phys->mass = 1;
+	phys->notProtag = 1;
 }

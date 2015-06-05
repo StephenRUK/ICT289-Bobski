@@ -18,7 +18,7 @@
 Camera camWithDefaults() {
 	Camera cam;
 
-	cam.X = 0;
+	cam.X = 1;
 	cam.Y = 1;
 	cam.Z = -1;
 
@@ -73,6 +73,7 @@ void camLookUp(Camera* cam, GLfloat deltaAngle) {
 
 	cam->fwdY = sin(cam->pitch);
 	cam->fwdZ = -1*cos(cam->pitch)*cos(cam->yaw);
+	cam->tSpeed = deltaAngle;
 }
 
 void camLookDown(Camera* cam, GLfloat deltaAngle) {
@@ -80,6 +81,7 @@ void camLookDown(Camera* cam, GLfloat deltaAngle) {
 
 	cam->fwdY = sin(cam->pitch);
 	cam->fwdZ = -1 * cos(cam->pitch)*cos(cam->yaw);
+	cam->tSpeed = deltaAngle;
 }
 
 void camLookLeft(Camera* cam, GLfloat deltaAngle) {
@@ -88,6 +90,7 @@ void camLookLeft(Camera* cam, GLfloat deltaAngle) {
 
 	cam->fwdX = cos(cam->pitch) * sin(cam->yaw);
 	cam->fwdZ = -1*cos(cam->pitch) * cos(cam->yaw);
+	cam->tSpeed = deltaAngle;
 }
 
 void camLookRight(Camera* cam, GLfloat deltaAngle) {
@@ -96,4 +99,5 @@ void camLookRight(Camera* cam, GLfloat deltaAngle) {
 
 	cam->fwdX = cos(cam->pitch) * sin(cam->yaw);
 	cam->fwdZ = -1 * cos(cam->pitch) * cos(cam->yaw);
+	cam->tSpeed = deltaAngle;
 }
