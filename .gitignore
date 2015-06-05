@@ -1,0 +1,6 @@
+*.idb
+*.pdb
+/bin
+/Debug
+*.sdf
+ICT289-Bobski.v12.suo
