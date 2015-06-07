@@ -16,6 +16,6 @@ typedef struct BoundingBox {
 } BoundingBox;
 
 BoundingBox bboxCalculateFromModel(Model* model);
-void bboxRotateAndRecalculate(BoundingBox* bbox);
+void bboxRotate(BoundingBox* bbox, float angle);
 
 #endif
