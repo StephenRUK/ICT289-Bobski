@@ -79,6 +79,16 @@ void drawPhoto(Bitmap* img, float x, float y)
 	//glBitmap(img.width, img.height, 250, 250, 0, 0, img.data);
 }
 
+void drawCaption(char text[], int left, int top) {
+    const int fontHeight = 15;
+    int i;
+
+    glRasterPos2i(left, top + fontHeight);
+    for (i=0; i<strlen(text); i++) {
+        glutBitmapCharacter(GLUT_BITMAP_9_BY_15, text[i]);
+    }
+}
+
 void loadPhoto()
 {
 	imgLoadBitmap("Resources/TheDevs.bmp", &exitPhoto);
@@ -91,6 +101,9 @@ void exitDraw() {
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	drawPhoto(&exitPhoto, 250, 80);
+	drawCaption("Stephen Randles", 250, 15);
+	drawCaption("Jordan Brown", 600, 15);
+	drawCaption("David Nankivell", 900, 15);
 
 	glutSwapBuffers();
 	glFlush();
@@ -392,41 +405,12 @@ void initGameObjects() {
 	sceneAddItem(&scene, obj);
 
 	//
-	// Sponge 1
+	// Sponge!
 	//
-	obj = gameObjCreate("Resources/spongebob.obj", "Resources/spongebob.bmp");	
-	obj->transform.position[0] = -6;
-	obj->transform.position[1] = 4;
-	obj->transform.position[2] = -24;
-
+	obj = gameObjCreate("Resources/spongebob.obj", "Resources/spongebob.bmp");
+	mathVector3MultiplyScalar(2, obj->transform.scale, obj->transform.scale);
+	obj->transform.position[2] = -10;
 	obj->physics.gravityFactor = 0;
-
-	mathVector3MultiplyScalar(2, obj->transform.scale, obj->transform.scale);
-	sceneAddItem(&scene, obj);
-
-	//
-	// Box Test 1
-	//
-
-	obj = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
-	obj->transform.position[1] = 35;
-	obj->transform.position[2] = -20;
-	mathVector3MultiplyScalar(2, obj->transform.scale, obj->transform.scale);
-
-	sceneAddItem(&scene, obj);
-
-	//
-	// Box Test 2
-	//
-
-	obj = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
-	
-	obj->transform.position[0] = -10;
-	obj->transform.position[1] = 15;
-	obj->transform.position[2] = -20;
-	mathVector3MultiplyScalar(5, obj->transform.scale, obj->transform.scale);
-
-	obj->physics.acceleration[0] = -0.5;
 
 	sceneAddItem(&scene, obj);
 
@@ -434,13 +418,11 @@ void initGameObjects() {
 	// Box 1
 	//
 
-
 	obj = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
-
-	obj->transform.position[0] = -2;
-	obj->transform.position[1] = 0;
-	obj->transform.position[2] = -26;
-	mathVector3MultiplyScalar(4, obj->transform.scale, obj->transform.scale);
+	obj->transform.position[0] = -9;
+	obj->transform.position[1] = 8;
+	obj->transform.position[2] = -19;
+	mathVector3MultiplyScalar(2, obj->transform.scale, obj->transform.scale);
 
 	obj->physics.isKinetic = 0;
 
@@ -450,12 +432,11 @@ void initGameObjects() {
 	// Box 2
 	//
 
-
 	obj = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
-
-	obj->transform.position[0] = -6;
-	obj->transform.position[1] = 0;
-	obj->transform.position[2] = -26;
+	
+	obj->transform.position[0] = -9;
+	obj->transform.position[1] = 4;
+	obj->transform.position[2] = -19;
 	mathVector3MultiplyScalar(4, obj->transform.scale, obj->transform.scale);
 
 	obj->physics.isKinetic = 0;
@@ -466,13 +447,12 @@ void initGameObjects() {
 	// Box 3
 	//
 
-
 	obj = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
 
-	obj->transform.position[0] = -6;
-	obj->transform.position[1] = 4;
-	obj->transform.position[2] = -26;
-	mathVector3MultiplyScalar(4, obj->transform.scale, obj->transform.scale);
+	obj->transform.position[0] = -9;
+	obj->transform.position[1] = 0;
+	obj->transform.position[2] = -19;
+	mathVector3MultiplyScalar(5, obj->transform.scale, obj->transform.scale);
 
 	obj->physics.isKinetic = 0;
 
@@ -482,13 +462,12 @@ void initGameObjects() {
 	// Box 4
 	//
 
-
 	obj = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
 
-	obj->transform.position[0] = -6;
+	obj->transform.position[0] = -9;
 	obj->transform.position[1] = 0;
-	obj->transform.position[2] = -22;
-	mathVector3MultiplyScalar(4, obj->transform.scale, obj->transform.scale);
+	obj->transform.position[2] = -15;
+	mathVector3MultiplyScalar(5, obj->transform.scale, obj->transform.scale);
 
 	obj->physics.isKinetic = 0;
 
@@ -498,13 +477,12 @@ void initGameObjects() {
 	// Box 5
 	//
 
-
 	obj = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
 
-	obj->transform.position[0] = -7;
-	obj->transform.position[1] = 4;
-	obj->transform.position[2] = -22;
-	mathVector3MultiplyScalar(2, obj->transform.scale, obj->transform.scale);
+	obj->transform.position[0] = -14;
+	obj->transform.position[1] = 0;
+	obj->transform.position[2] = -19;
+	mathVector3MultiplyScalar(5, obj->transform.scale, obj->transform.scale);
 
 	obj->physics.isKinetic = 0;
 
@@ -514,12 +492,26 @@ void initGameObjects() {
 	// Box 6
 	//
 
+	obj = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
+
+	obj->transform.position[0] = -22;
+	obj->transform.position[1] = 0;
+	obj->transform.position[2] = -26;
+	mathVector3MultiplyScalar(5, obj->transform.scale, obj->transform.scale);
+
+	obj->physics.isKinetic = 0;
+
+	sceneAddItem(&scene, obj);
+
+	//
+	// Box 7
+	//
 
 	obj = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
 
-	obj->transform.position[0] = -5;
-	obj->transform.position[1] = 4;
-	obj->transform.position[2] = -22;
+	obj->transform.position[0] = -22;
+	obj->transform.position[1] = 0;
+	obj->transform.position[2] = -30;
 	mathVector3MultiplyScalar(2, obj->transform.scale, obj->transform.scale);
 
 	obj->physics.isKinetic = 0;
@@ -530,13 +522,12 @@ void initGameObjects() {
 	// Box 7
 	//
 
-
 	obj = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
 
-	obj->transform.position[0] = -4.5;
-	obj->transform.position[1] = 4;
-	obj->transform.position[2] = -21;
-	mathVector3MultiplyScalar(1, obj->transform.scale, obj->transform.scale);
+	obj->transform.position[0] = -22;
+	obj->transform.position[1] = 0;
+	obj->transform.position[2] = -30;
+	mathVector3MultiplyScalar(2, obj->transform.scale, obj->transform.scale);
 
 	obj->physics.isKinetic = 0;
 
@@ -546,18 +537,346 @@ void initGameObjects() {
 	// Box 8
 	//
 
-
 	obj = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
 
-	obj->transform.position[0] = -4.5;
-	obj->transform.position[1] = 5;
-	obj->transform.position[2] = -21;
-	mathVector3MultiplyScalar(1, obj->transform.scale, obj->transform.scale);
+	obj->transform.position[0] = -20;
+	obj->transform.position[1] = 0;
+	obj->transform.position[2] = -30;
+	mathVector3MultiplyScalar(2, obj->transform.scale, obj->transform.scale);
 
 	obj->physics.isKinetic = 0;
 
 	sceneAddItem(&scene, obj);
 
+	//
+	// Box 9
+	//
+
+	obj = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
+
+	obj->transform.position[0] = -18;
+	obj->transform.position[1] = 0;
+	obj->transform.position[2] = -30;
+	mathVector3MultiplyScalar(2, obj->transform.scale, obj->transform.scale);
+
+	obj->physics.isKinetic = 0;
+
+	sceneAddItem(&scene, obj);
+
+	//
+	// Box 10
+	//
+
+	obj = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
+
+	obj->transform.position[0] = -20;
+	obj->transform.position[1] = 2;
+	obj->transform.position[2] = -30;
+	mathVector3MultiplyScalar(2, obj->transform.scale, obj->transform.scale);
+
+	obj->physics.isKinetic = 0;
+
+	sceneAddItem(&scene, obj);
+
+	//
+	// Box 11
+	//
+
+	obj = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
+
+	obj->transform.position[0] = -20;
+	obj->transform.position[1] = 4;
+	obj->transform.position[2] = -30;
+	mathVector3MultiplyScalar(2, obj->transform.scale, obj->transform.scale);
+
+	obj->physics.isKinetic = 0;
+
+	sceneAddItem(&scene, obj);
+
+	//
+	// Box 12
+	//
+
+	obj = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
+
+	obj->transform.position[0] = -20;
+	obj->transform.position[1] = 0;
+	obj->transform.position[2] = -32;
+	mathVector3MultiplyScalar(2, obj->transform.scale, obj->transform.scale);
+
+	obj->physics.isKinetic = 0;
+
+	sceneAddItem(&scene, obj);
+
+	//
+	// Box 13
+	//
+
+	obj = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
+
+	obj->transform.position[0] = -20;
+	obj->transform.position[1] = 2;
+	obj->transform.position[2] = -32;
+	mathVector3MultiplyScalar(2, obj->transform.scale, obj->transform.scale);
+
+	obj->physics.isKinetic = 0;
+
+	sceneAddItem(&scene, obj);
+
+	//
+	// Box 14
+	//
+
+	obj = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
+
+	obj->transform.position[0] = -20;
+	obj->transform.position[1] = 0;
+	obj->transform.position[2] = -43;
+	mathVector3MultiplyScalar(3, obj->transform.scale, obj->transform.scale);
+
+	obj->physics.isKinetic = 0;
+
+	sceneAddItem(&scene, obj);
+
+	//
+	// Box 15
+	//
+
+	obj = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
+
+	obj->transform.position[0] = -17;
+	obj->transform.position[1] = 0;
+	obj->transform.position[2] = -43;
+	mathVector3MultiplyScalar(3, obj->transform.scale, obj->transform.scale);
+
+	obj->physics.isKinetic = 0;
+
+	sceneAddItem(&scene, obj);
+
+	//
+	// Box 16
+	//
+
+	obj = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
+
+	obj->transform.position[0] = -14;
+	obj->transform.position[1] = 0;
+	obj->transform.position[2] = -43;
+	mathVector3MultiplyScalar(3, obj->transform.scale, obj->transform.scale);
+
+	obj->physics.isKinetic = 0;
+
+	sceneAddItem(&scene, obj);
+
+	//
+	// Box 17
+	//
+
+	obj = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
+
+	obj->transform.position[0] = -11;
+	obj->transform.position[1] = 0;
+	obj->transform.position[2] = -43;
+	mathVector3MultiplyScalar(3, obj->transform.scale, obj->transform.scale);
+
+	obj->physics.isKinetic = 0;
+
+	sceneAddItem(&scene, obj);
+
+	//
+	// Box 18
+	//
+
+	obj = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
+
+	obj->transform.position[0] = -8.5;
+	obj->transform.position[1] = 0;
+	obj->transform.position[2] = -43;
+	mathVector3MultiplyScalar(3, obj->transform.scale, obj->transform.scale);
+
+	obj->physics.isKinetic = 0;
+
+	sceneAddItem(&scene, obj);
+
+	//
+	// Box 19
+	//
+
+	obj = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
+
+	obj->transform.position[0] = -17;
+	obj->transform.position[1] = 3;
+	obj->transform.position[2] = -43;
+	mathVector3MultiplyScalar(3, obj->transform.scale, obj->transform.scale);
+
+	obj->physics.isKinetic = 0;
+
+	sceneAddItem(&scene, obj);
+
+	//
+	// Box 20
+	//
+
+	obj = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
+
+	obj->transform.position[0] = -14;
+	obj->transform.position[1] = 3;
+	obj->transform.position[2] = -43;
+	mathVector3MultiplyScalar(3, obj->transform.scale, obj->transform.scale);
+
+	obj->physics.isKinetic = 0;
+
+	sceneAddItem(&scene, obj);
+
+	//
+	// Box 21
+	//
+
+	obj = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
+
+	obj->transform.position[0] = -11;
+	obj->transform.position[1] = 3;
+	obj->transform.position[2] = -43;
+	mathVector3MultiplyScalar(3, obj->transform.scale, obj->transform.scale);
+
+	obj->physics.isKinetic = 0;
+
+	sceneAddItem(&scene, obj);
+
+	//
+	// Box 22
+	//
+
+	obj = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
+
+	obj->transform.position[0] = -8.5;
+	obj->transform.position[1] = 3;
+	obj->transform.position[2] = -43;
+	mathVector3MultiplyScalar(3, obj->transform.scale, obj->transform.scale);
+
+	obj->physics.isKinetic = 0;
+
+	sceneAddItem(&scene, obj);
+
+	//
+	// Box 22
+	//
+
+	obj = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
+
+	obj->transform.position[0] = -8.5;
+	obj->transform.position[1] = 6;
+	obj->transform.position[2] = -43;
+	mathVector3MultiplyScalar(3, obj->transform.scale, obj->transform.scale);
+
+	obj->physics.isKinetic = 0;
+
+	sceneAddItem(&scene, obj);
+
+	//
+	// Box 23
+	//
+
+	obj = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
+
+	obj->transform.position[0] = -11;
+	obj->transform.position[1] = 6;
+	obj->transform.position[2] = -43;
+	mathVector3MultiplyScalar(3, obj->transform.scale, obj->transform.scale);
+
+	obj->physics.isKinetic = 0;
+
+	sceneAddItem(&scene, obj);
+
+	//
+	// Box 24
+	//
+
+	obj = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
+
+	obj->transform.position[0] = -14;
+	obj->transform.position[1] = 6;
+	obj->transform.position[2] = -43;
+	mathVector3MultiplyScalar(3, obj->transform.scale, obj->transform.scale);
+
+	obj->physics.isKinetic = 0;
+
+	sceneAddItem(&scene, obj);
+
+	//
+	// Box 25
+	//
+
+	obj = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
+
+	obj->transform.position[0] = -8.5;
+	obj->transform.position[1] = 9;
+	obj->transform.position[2] = -43;
+	mathVector3MultiplyScalar(3, obj->transform.scale, obj->transform.scale);
+
+	obj->physics.isKinetic = 0;
+
+	sceneAddItem(&scene, obj);
+
+	//
+	// Box 26
+	//
+
+	obj = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
+
+	obj->transform.position[0] = -11;
+	obj->transform.position[1] = 9;
+	obj->transform.position[2] = -43;
+	mathVector3MultiplyScalar(3, obj->transform.scale, obj->transform.scale);
+
+	obj->physics.isKinetic = 0;
+
+	sceneAddItem(&scene, obj);
+
+	//
+	// Box 27
+	//
+
+	obj = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
+
+	obj->transform.position[0] = -8.5;
+	obj->transform.position[1] = 12;
+	obj->transform.position[2] = -43;
+	mathVector3MultiplyScalar(3, obj->transform.scale, obj->transform.scale);
+
+	obj->physics.isKinetic = 0;
+
+	sceneAddItem(&scene, obj);
+
+	//
+	// Box 28
+	//
+
+	obj = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
+
+	obj->transform.position[0] = -8.5;
+	obj->transform.position[1] = 0;
+	obj->transform.position[2] = -40;
+	mathVector3MultiplyScalar(3, obj->transform.scale, obj->transform.scale);
+
+	obj->physics.isKinetic = 0;
+
+	sceneAddItem(&scene, obj);
+
+	//
+	// Box 29
+	//
+
+	obj = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
+
+	obj->transform.position[0] = 12;
+	obj->transform.position[1] = 0;
+	obj->transform.position[2] = -13.5;
+	mathVector3MultiplyScalar(5, obj->transform.scale, obj->transform.scale);
+
+	obj->physics.isKinetic = 0;
+
+	sceneAddItem(&scene, obj);
 
 	//
 	// Wall
@@ -569,9 +888,7 @@ void initGameObjects() {
 	obj->transform.position[1] = 0;
 	obj->transform.position[2] = -30;
 	obj->transform.rotationAngles[1] = 90.0f;
-
-	//mathVector3MultiplyScalar(0.05f, obj->transform.scale, obj->transform.scale);
-	gameObjScale(obj, 0.05f, 0.05f, 0.05f);
+	mathVector3MultiplyScalar(0.05f, obj->transform.scale, obj->transform.scale);
 
 	obj->physics.isKinetic = 0;
 
@@ -587,8 +904,7 @@ void initGameObjects() {
 	obj->transform.position[1] = 0;
 	obj->transform.position[2] = -30;
 	obj->transform.rotationAngles[1] = 90.0f;
-	
-	gameObjScale(obj, 0.05f, 0.05f, 0.05f);
+	mathVector3MultiplyScalar(0.05f, obj->transform.scale, obj->transform.scale);
 
 	obj->physics.isKinetic = 0;
 
@@ -600,12 +916,124 @@ void initGameObjects() {
 
 	obj = gameObjCreate("Resources/wall.obj", "Resources/wall.bmp");
 
+	obj->transform.position[0] = -8;
+	obj->transform.position[1] = 0;
+	obj->transform.position[2] = -11;
+	obj->transform.rotationAngles[1] = 180.0f;
+	mathVector3MultiplyScalar(0.05f, obj->transform.scale, obj->transform.scale);
+
+	obj->physics.isKinetic = 0;
+
+	sceneAddItem(&scene, obj);
+
+	//
+	// Wall 4
+	//
+
+	obj = gameObjCreate("Resources/wall.obj", "Resources/wall.bmp");
+
 	obj->transform.position[0] = 8;
+	obj->transform.position[1] = 0;
+	obj->transform.position[2] = -11;
+	obj->transform.rotationAngles[1] = 180.0f;
+	mathVector3MultiplyScalar(0.05f, obj->transform.scale, obj->transform.scale);
+
+	obj->physics.isKinetic = 0;
+
+	sceneAddItem(&scene, obj);
+
+	//
+	// Wall 5
+	//
+
+	obj = gameObjCreate("Resources/wall.obj", "Resources/wall.bmp");
+
+	obj->transform.position[0] = 8;
+	obj->transform.position[1] = 0;
+	obj->transform.position[2] = -28.25;
+	obj->transform.rotationAngles[1] = 180.0f;
+	mathVector3MultiplyScalar(0.05f, obj->transform.scale, obj->transform.scale);
+
+	obj->physics.isKinetic = 0;
+
+	sceneAddItem(&scene, obj);
+
+	//
+	// Wall 6
+	//
+
+	obj = gameObjCreate("Resources/wall.obj", "Resources/wall.bmp");
+
+	obj->transform.position[0] = -8;
+	obj->transform.position[1] = 0;
+	obj->transform.position[2] = -28.25;
+	obj->transform.rotationAngles[1] = 180.0f;
+	mathVector3MultiplyScalar(0.05f, obj->transform.scale, obj->transform.scale);
+
+	obj->physics.isKinetic = 0;
+
+	sceneAddItem(&scene, obj);
+
+	//
+	// Wall 7
+	//
+
+	obj = gameObjCreate("Resources/wall.obj", "Resources/wall.bmp");
+
+	obj->transform.position[0] = -26;
 	obj->transform.position[1] = 0;
 	obj->transform.position[2] = -20;
 	obj->transform.rotationAngles[1] = 180.0f;
-	
-	gameObjScale(obj, 0.05f, 0.05f, 0.05f);
+	mathVector3MultiplyScalar(0.05f, obj->transform.scale, obj->transform.scale);
+
+	obj->physics.isKinetic = 0;
+
+	sceneAddItem(&scene, obj);
+
+	//
+	// Wall 8
+	//
+
+	obj = gameObjCreate("Resources/wall.obj", "Resources/wall.bmp");
+
+	obj->transform.position[0] = -33;
+	obj->transform.position[1] = 0;
+	obj->transform.position[2] = -46.5;
+	obj->transform.position[3] = 1.5;
+	obj->transform.rotationAngles[1] = 90.0f;
+	mathVector3MultiplyScalar(0.05f, obj->transform.scale, obj->transform.scale);
+
+	obj->physics.isKinetic = 0;
+
+	sceneAddItem(&scene, obj);
+
+	//
+	// Wall 9
+	//
+
+	obj = gameObjCreate("Resources/wall.obj", "Resources/wall.bmp");
+
+	obj->transform.position[0] = 16;
+	obj->transform.position[1] = 0;
+	obj->transform.position[2] = -28.5;
+	obj->transform.rotationAngles[1] = 360.0f;
+	mathVector3MultiplyScalar(0.05f, obj->transform.scale, obj->transform.scale);
+
+	obj->physics.isKinetic = 0;
+
+	sceneAddItem(&scene, obj);
+
+	//
+	// Wall 10
+	//
+
+	obj = gameObjCreate("Resources/wall.obj", "Resources/wall.bmp");
+
+	obj->transform.position[0] = 16;
+	obj->transform.position[1] = 0;
+	obj->transform.position[2] = -45.5;
+	obj->transform.rotationAngles[1] = 360.0f;
+	mathVector3MultiplyScalar(0.05f, obj->transform.scale, obj->transform.scale);
 
 	obj->physics.isKinetic = 0;
 
@@ -616,7 +1044,7 @@ void idle() {
 	glutPostRedisplay();
 }
 
-void menu(num)
+void menu(int num)
 {
 	switch (num)
 	{
