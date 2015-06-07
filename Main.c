@@ -31,6 +31,9 @@ SceneList scene;	// Contains all game objects in the scene
 
 GLuint texGround;	// Debug
 
+GLfloat lightPos[] = { -10.0, 4.0, 0.0, 0.0 };
+GLfloat lightRGBA[] = { 0.2, 0.2, 0.2, 1.0 };
+
 //***********************************/
 
 void doPhysics() {
@@ -103,7 +106,7 @@ void display(void) {
 
 	drawGround(texGround);
 
-	glTranslatef(0, 0, -60);
+	//glTranslatef(0, 0, -60);
 	
 	drawScene();
 
@@ -134,6 +137,7 @@ void keyFunc(int keyCode, int x, int y) {
 
 void keyFunc2(unsigned char keyCode, int x, int y) {
 	float turnSpeed = 0.05f;
+	GameObject *snowball;
 
 	switch (keyCode) {
 
@@ -158,6 +162,19 @@ void keyFunc2(unsigned char keyCode, int x, int y) {
 	//
 	case ' ':
 		// Trigger function to create snowball, set up position, init. velocity.
+
+		snowball = gameObjCreate("Resources/snowball.obj", "Resources/piste_snow.bmp");
+		snowball->transform.position[0] = cam.X;
+		snowball->transform.position[1] = cam.Y * 0.7f;
+		snowball->transform.position[2] = cam.Z;
+
+		float throwSpeed = 10;
+		snowball->physics.velocity[0] = cam.fwdX * throwSpeed;
+		snowball->physics.velocity[1] = (cam.pitch + cos(45)) * throwSpeed;
+		snowball->physics.velocity[2] = cam.fwdZ * throwSpeed;
+
+		sceneAddItem(&scene, snowball);
+
 		break;
 
 	}
