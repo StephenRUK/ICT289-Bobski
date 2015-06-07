@@ -1,5 +1,6 @@
 #include "BoundingBox.h"
 #include "../Maths/MathsUtil.h"
+#include <math.h>
 
 /*
 * bboxCalculateFromModel
@@ -8,26 +9,25 @@
 * Doesn't incorporate scaling after loading the model.
 * Must be updated after scaling operations. (i.e. write a function to apply scaling to transform and bbox)
 */
-BoundingBox bboxCalculateFromModel(Model* model) {
-	BoundingBox bbox;
+void bboxCalculateFromModel(BoundingBox* bbox, Model* model) {
 	vec3* verts = model->vertices;
 	
 	int i;
 	for (i = 0; i < model->vertexCount; i++) {
 		
-		if (verts[i][0] < bbox.min[0]) bbox.min[0] = verts[i][0];	// min x
-		if (verts[i][0] > bbox.max[0]) bbox.max[0] = verts[i][0];	// max x
-		if (verts[i][1] < bbox.min[1]) bbox.min[1] = verts[i][1];	// min y
-		if (verts[i][1] > bbox.max[1]) bbox.max[1] = verts[i][1];	// max y
-		if (verts[i][2] < bbox.min[2]) bbox.min[2] = verts[i][2];	// min z
-		if (verts[i][2] > bbox.max[2]) bbox.max[2] = verts[i][2];	// max z
+		if (verts[i][0] < bbox->minX) bbox->minX = verts[i][0];	// min x
+		if (verts[i][0] > bbox->maxX) bbox->maxX = verts[i][0];	// max x
+		if (verts[i][1] < bbox->minY) bbox->minY = verts[i][1];	// min y
+		if (verts[i][1] > bbox->maxY) bbox->maxY = verts[i][1];	// max y
+		if (verts[i][2] < bbox->minZ) bbox->minZ = verts[i][2];	// min z
+		if (verts[i][2] > bbox->maxZ) bbox->maxZ = verts[i][2];	// max z
 	}
 
 	// Calculate centre point (max-min)/2
-	mathVector3Subtract(bbox.max, bbox.min, bbox.centre);
-	mathVector3MultiplyScalar(0.5, bbox.centre, bbox.centre);
+	bbox->centreX = (bbox->maxX - bbox->minX) / 2;
+	bbox->centreY = (bbox->maxY - bbox->minY) / 2;
+	bbox->centreZ = (bbox->maxZ - bbox->minZ) / 2;
 
-	return bbox;
 }
 
 /*
@@ -42,14 +42,14 @@ void bboxRotate(BoundingBox* bbox, float angle) {
 
 	float angleInRad = mathDegToRad(angle);
 
-	bbox->centre[0] = bbox->centre[0] * sin(angleInRad);
-	bbox->centre[2] = bbox->centre[2] * cos(angleInRad);
+	bbox->centreX = bbox->centreX * sin(angleInRad);
+	bbox->centreZ = bbox->centreZ * cos(angleInRad);
 	
-	bbox->min[0] = bbox->min[0] * sin(angleInRad);
-	bbox->min[2] = bbox->min[2] * cos(angleInRad);
+	bbox->minX = bbox->minX * sin(angleInRad);
+	bbox->minZ = bbox->minZ * cos(angleInRad);
 
-	bbox->max[0] = bbox->max[0] * sin(angleInRad);
-	bbox->max[2] = bbox->max[2] * cos(angleInRad);
+	bbox->maxX = bbox->maxX * sin(angleInRad);
+	bbox->maxZ = bbox->maxZ * cos(angleInRad);
 
 	//
 	// Recalculate bounding box so it's axis-aligned
@@ -57,17 +57,4 @@ void bboxRotate(BoundingBox* bbox, float angle) {
 
 	// Take min and max of the bounding box?
 	// Conditions: http://www.euclideanspace.com/threed/animation/collisiondetect/
-}
-
-void bboxCheckCollision(BoundingBox* bbox1, BoundingBox* bbox2) {
-	// Return true/false, or intersection?
-
-}
-
-void bboxResolveCollision(GameObject* a, GameObject* b) {
-
-
-
-
-
 }

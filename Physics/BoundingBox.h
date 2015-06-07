@@ -2,7 +2,7 @@
 #define BOUNDINGBOX_H
 
 #include "../Types.h"
-#include "../GameObject.h"
+#include "../Model.h"
 
 /**
 * Collider: Axis-aligned bounding box (AABB)
@@ -10,15 +10,12 @@
 *	http://www.euclideanspace.com/threed/animation/collisiondetect/
 **/
 typedef struct BoundingBox {
-	vec3 min;
-	vec3 max;
-	vec3 centre;
+	float minX,minY,minZ;
+	float maxX,maxY,maxZ;
+	float centreX,centreY,centreZ;
 } BoundingBox;
 
-BoundingBox bboxCalculateFromModel(Model* model);
+void bboxCalculateFromModel(BoundingBox* bbox, Model* model);
 void bboxRotate(BoundingBox* bbox, float angle);
-
-void bboxCheckCollision(BoundingBox* bbox1, BoundingBox* bbox2);
-void bboxResolveCollision(GameObject* a, GameObject* b);
 
 #endif

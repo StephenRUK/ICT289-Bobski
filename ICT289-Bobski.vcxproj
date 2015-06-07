@@ -77,6 +77,7 @@
     <ClInclude Include="Model.h" />
     <ClInclude Include="Models.h" />
     <ClInclude Include="Physics\BoundingBox.h" />
+    <ClInclude Include="Physics\CollisionResolution.h" />
     <ClInclude Include="Physics\PhysicsObject.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Transform.h" />
@@ -91,6 +92,7 @@
     <ClCompile Include="Maths\MathsUtil.c" />
     <ClCompile Include="Models.c" />
     <ClCompile Include="Physics\BoundingBox.c" />
+    <ClCompile Include="Physics\CollisionResolution.c" />
     <ClCompile Include="Physics\PhysicsObject.c" />
     <ClCompile Include="Scene.c" />
     <ClCompile Include="Transform.c" />

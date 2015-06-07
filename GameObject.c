@@ -95,11 +95,16 @@ GameObject* gameObjCreate(char* modelPath, char* texturePath) {
 	Transform trans;
 	PhysicsObject physics;
 	Model model;
+	BoundingBox bbox;
 
 	obj = malloc(sizeof(GameObject));
 	
 	objLoadModel(&model, modelPath);
 	model.textureID = imgLoadBitmapToTexture(texturePath);
+
+	if (&model != NULL){
+		bboxCalculateFromModel(&bbox, &model); // Calculate bounding box
+	}
 
 	transformSetDefaults(&trans);
 
@@ -108,6 +113,7 @@ GameObject* gameObjCreate(char* modelPath, char* texturePath) {
 	obj->model = model;
 	obj->transform = trans;
 	obj->physics = physics;
+	obj->bbox = bbox;
 	
 	return obj;
 }

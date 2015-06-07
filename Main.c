@@ -16,6 +16,7 @@
 #include "Loader/ImageLoader.h"
 #include "GameObject.h"
 #include "Scene.h"
+#include "Physics/CollisionResolution.h"
 
 #include "Loader/ObjLoader.h"
 
@@ -83,15 +84,26 @@ void checkCollisions(){
 	SceneItem* cItem1;
 	SceneItem* cItem2;
 
+	int collisionTrue = 0;
+
 	if (scene.first != NULL){
+
 		cItem1 = scene.first;
-		cItem2 = cItem1->next;
-		while (cItem1 != NULL && cItem2 != NULL){
 
-			cItem1->obj->bbox = bboxCalculateFromModel(cItem1->obj);
-			collisionDetection(cItem1->obj->bbox, cItem2->obj->bbox);
+		while (cItem1 != NULL){
 
+			cItem2 = scene.first;
 
+			while (cItem2 != NULL) {
+				if (cItem1 != cItem2) {
+					collisionTrue = cResCheckCollision(&(cItem1->obj->bbox), &(cItem2->obj->bbox));
+					cResResolveCollision(cItem1->obj, cItem2->obj);
+				}
+
+				cItem2 = cItem2->next;
+			}
+
+			cItem1 = cItem1->next;
 
 		}
 	}
