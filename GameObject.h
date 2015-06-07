@@ -5,11 +5,13 @@
 #include "Transform.h"
 #include "Model.h"
 #include "Physics/PhysicsObject.h"
+#include "Physics/BoundingBox.h"
 
 typedef struct GameObject {
 	Model model;
 	Transform transform;
 	PhysicsObject physics;
+	BoundingBox bbox;
 
 	//GameObject** children;
 	//int childrenLength;
