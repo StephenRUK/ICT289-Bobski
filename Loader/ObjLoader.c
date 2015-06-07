@@ -97,7 +97,7 @@ void objLoadModel(Model* model, char* filePath) {
 
 			lineVals = strtok(NULL, coordDelimiter);	// Fetch first value
 			dimension = 0;	// Choose X, Y, Z of the vertex
-			while (lineVals != NULL) {
+			while (lineVals != NULL && dimension < 3) {
 				tempVertices[vertexIndex][dimension] = (float)strtod(lineVals, NULL);
 				dimension++;
 				lineVals = strtok(NULL, coordDelimiter);	// Fetch next value
@@ -108,7 +108,7 @@ void objLoadModel(Model* model, char* filePath) {
 
 			lineVals = strtok(NULL, coordDelimiter);	// Fetch first value
 			dimension = 0;	// Choose X, Y, Z of the normal
-			while (lineVals != NULL) {
+			while (lineVals != NULL && dimension < 2 ) {
 				tempNormals[normalIndex][dimension] = (float)strtod(lineVals, NULL);
 				dimension++;
 				lineVals = strtok(NULL, coordDelimiter);	// Fetch next value
