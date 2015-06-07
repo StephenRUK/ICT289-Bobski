@@ -43,6 +43,7 @@ GLuint imgLoadBitmapToTexture(char* filename) {
 	GLuint textureID;
 
 	imgLoadBitmap(filename, &tex);
+	if (tex.dataBytes == 0) return 0;
 
 	//
 	// Load data into OpenGL texture

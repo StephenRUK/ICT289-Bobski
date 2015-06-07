@@ -47,7 +47,7 @@ void objLoadModel(Model* model, char* filePath) {
 
 	objFile = fopen(filePath, "r");
 
-	if (ferror(stdin)) {
+	if (!objFile) {
 		fprintf(stderr, "File could not be read: %s\n", filePath);
 		return;
 	}
