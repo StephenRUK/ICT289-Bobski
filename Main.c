@@ -31,8 +31,21 @@ SceneList scene;	// Contains all game objects in the scene
 
 GLuint texGround;	// Debug
 
-GLfloat lightPos[] = { -10.0, 4.0, 0.0, 0.0 };
-GLfloat lightRGBA[] = { 0.2, 0.2, 0.2, 1.0 };
+//
+// Light parameters
+//
+
+// Light0: Key light, aka. "the sun"
+GLfloat lightPos0[] = { 60.0, 20.0, 30.0, 0.0 };
+GLfloat lightColour0[] = { 0.8, 0.8, 0.8, 1.0 };
+
+// Light1: Side light
+GLfloat lightPos1[] = { 10.0, 1.5, 0.0, 0.0 };
+GLfloat lightColour1[] = { 0.15, 0.15, 0.15, 1.0 };
+
+// Light1: Back light
+GLfloat lightPos2[] = { 0.0, 2.0, -2.0, 0.0 };
+GLfloat lightColour2[] = { 0.2, 0.2, 0.2, 1.0 };
 
 //***********************************/
 
@@ -93,16 +106,27 @@ void display(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
-	// Lighting setup (is this the right place?)
-	// 1 - Set lighting model (colour and intensity)
-	// 2 - Set light position
-	// 3 - Set and enable 'colour material'
-	// 4 - Enable lighting
-
 	gluLookAt(
 		cam.X, cam.Y, cam.Z,
 		cam.X + cam.fwdX, cam.Y + cam.fwdY, cam.Z + cam.fwdZ,
 		0, 1, 0);
+
+	//
+	// Lighting
+	//
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lightColour0);
+
+	glLightfv(GL_LIGHT0, GL_POSITION, lightPos0);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColour0);
+
+	glLightfv(GL_LIGHT1, GL_POSITION, lightPos1);
+	glLightfv(GL_LIGHT1, GL_DIFFUSE, lightColour1);
+
+	glLightfv(GL_LIGHT2, GL_POSITION, lightPos2);
+	glLightfv(GL_LIGHT2, GL_DIFFUSE, lightColour2);
+
+	//-----------------------
+
 
 	drawGround(texGround);
 
@@ -211,6 +235,7 @@ void initGameObjects() {
 	//
 	obj = gameObjCreate("Resources/spongebob.obj", "Resources/spongebob.bmp");
 	mathVector3MultiplyScalar(2, obj->transform.scale, obj->transform.scale);
+	obj->transform.position[2] = -10;
 	obj->physics.gravityFactor = 0;
 
 	sceneAddItem(&scene, obj);
@@ -221,6 +246,7 @@ void initGameObjects() {
 
 	obj = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
 	obj->transform.position[1] = 35;
+	obj->transform.position[2] = -20;
 	mathVector3MultiplyScalar(2, obj->transform.scale, obj->transform.scale);
 
 	sceneAddItem(&scene, obj);
@@ -233,6 +259,7 @@ void initGameObjects() {
 	
 	obj->transform.position[0] = -10;
 	obj->transform.position[1] = 15;
+	obj->transform.position[2] = -20;
 	mathVector3MultiplyScalar(5, obj->transform.scale, obj->transform.scale);
 
 	obj->physics.acceleration[0] = -0.5;
@@ -261,9 +288,9 @@ void initGameObjects() {
 
 	obj = gameObjCreate("Resources/wall.obj", "Resources/wall.bmp");
 
-	obj->transform.position[0] = -10;
+	obj->transform.position[0] = -25;
 	obj->transform.position[1] = 0;
-	obj->transform.position[2] = -20;
+	obj->transform.position[2] = -30;
 	obj->transform.rotationAngles[1] = 90.0f;
 	mathVector3MultiplyScalar(0.05f, obj->transform.scale, obj->transform.scale);
 
@@ -302,7 +329,17 @@ void init() {
 	loadTextures();
 	initGameObjects();
 
-	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	// Lighting and blending
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	
+	glEnable(GL_COLOR_MATERIAL);
+	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	glEnable(GL_LIGHT1);
+	glEnable(GL_LIGHT2);
+
 
     // Switch over to modelview matrix now that projection has been set up
     glMatrixMode(GL_MODELVIEW);	
