@@ -5,7 +5,7 @@
 *   Authors: Stephen Randles
 */
 
-#define FREEGLUT_LIB_PRAGMAS 1
+#define FREEGLUT_LIB_PRAGMAS 1	// Stops Visual Studio from trying to load the debug binary freeglutd.lib (not installed & not needed)
 
 #include <stdio.h>
 #include <math.h>
@@ -30,6 +30,13 @@ float dt = 0;	// Seconds elapsed between loops
 SceneList scene;	// Contains all game objects in the scene
 
 GLuint texGround;	// Debug
+
+//
+// Player parameters
+// TODO: Move to separate data structure (Player struct?)
+//
+float playerThrowSpeed = 8;		// Metres per second
+float playerThrowAngle = 45;	// Degrees over camera pitch angle (relative to view)
 
 //
 // Light parameters
@@ -139,7 +146,7 @@ void display(void) {
 }
 
 void keyFunc(int keyCode, int x, int y) {
-	float moveSpeed = 1;
+	float moveSpeed = 0.8;	// Metres moved on each keypress
 
 	switch (keyCode) {
 	case GLUT_KEY_LEFT:
@@ -188,14 +195,13 @@ void keyFunc2(unsigned char keyCode, int x, int y) {
 		// Trigger function to create snowball, set up position, init. velocity.
 
 		snowball = gameObjCreate("Resources/snowball.obj", "Resources/piste_snow.bmp");
-		snowball->transform.position[0] = cam.X;
-		snowball->transform.position[1] = cam.Y * 0.7f;
+		snowball->transform.position[0] = cam.X - 0.6;
+		snowball->transform.position[1] = cam.Y;
 		snowball->transform.position[2] = cam.Z;
 
-		float throwSpeed = 10;
-		snowball->physics.velocity[0] = cam.fwdX * throwSpeed;
-		snowball->physics.velocity[1] = (cam.pitch + cos(45)) * throwSpeed;
-		snowball->physics.velocity[2] = cam.fwdZ * throwSpeed;
+		snowball->physics.velocity[0] = cam.fwdX * playerThrowSpeed;
+		snowball->physics.velocity[1] = (cam.pitch + cos(playerThrowAngle)) * playerThrowSpeed;
+		snowball->physics.velocity[2] = cam.fwdZ * playerThrowSpeed;
 
 		sceneAddItem(&scene, snowball);
 
