@@ -114,8 +114,8 @@ void display(void) {
 	glLoadIdentity();
 
 	gluLookAt(
-		cam.X, cam.Y, cam.Z,
-		cam.X + cam.fwdX, cam.Y + cam.fwdY, cam.Z + cam.fwdZ,
+		*(cam.X), *(cam.Y), *(cam.Z),
+		*(cam.X) + cam.fwdX, *(cam.Y) + cam.fwdY, *(cam.Z) + cam.fwdZ,
 		0, 1, 0);
 
 	//
@@ -195,9 +195,9 @@ void keyFunc2(unsigned char keyCode, int x, int y) {
 		// Trigger function to create snowball, set up position, init. velocity.
 
 		snowball = gameObjCreate("Resources/snowball.obj", "Resources/piste_snow.bmp");
-		snowball->transform.position[0] = cam.X - 0.6;
-		snowball->transform.position[1] = cam.Y;
-		snowball->transform.position[2] = cam.Z;
+		snowball->transform.position[0] = *(cam.X) - 0.6;
+		snowball->transform.position[1] = *(cam.Y);
+		snowball->transform.position[2] = *(cam.Z);
 
 		snowball->physics.velocity[0] = cam.fwdX * playerThrowSpeed;
 		snowball->physics.velocity[1] = (cam.pitch + cos(playerThrowAngle)) * playerThrowSpeed;
@@ -330,7 +330,7 @@ void init() {
 
 	// Init camera
 	cam = camWithDefaults();
-	cam.Y = 1.68f;	// Player eyes height
+	sceneAddItem(&scene, cam.player);
 
 	loadTextures();
 	initGameObjects();

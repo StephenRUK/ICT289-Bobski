@@ -2,9 +2,12 @@
 #define CAMERA_H
 
 #include "Includes.h"
+#include "GameObject.h"
 
 typedef struct Camera {
-	GLfloat X, Y, Z;
+	GameObject* player;
+
+	GLfloat *X, *Y, *Z;
 	GLfloat fwdX, fwdY, fwdZ;
 	GLfloat upX, upY, upZ;
 
