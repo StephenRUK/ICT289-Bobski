@@ -123,6 +123,8 @@ void exitInit() {
 	glutIdleFunc(NULL);
 	glDisable(GL_LIGHTING);
 
+	camReset(&cam);
+
 	glutPostRedisplay();
 
 }
@@ -380,11 +382,6 @@ void initGameObjects() {
 
 	obj = gameObjCreate("Resources/box.obj", "Resources/piste_snow.bmp");
 	gameObjScale(obj, 500, 0.1, 500);
-	/*
-	obj->transform.scale[0] = 500;
-	obj->transform.scale[1] = 0.1;
-	obj->transform.scale[2] = 500;
-	*/
 	obj->transform.position[1] = -1;
 	
 	obj->physics.isKinetic = 0;
@@ -392,23 +389,10 @@ void initGameObjects() {
 	sceneAddItem(&scene, obj);
 
 	//
-	// Sponge Test
-	//
-	obj = gameObjCreate("Resources/spongebob.obj", "Resources/spongebob.bmp");
-	gameObjScale(obj, 2, 2, 2);
-
-	//mathVector3MultiplyScalar(2, obj->transform.scale, obj->transform.scale);
-
-	obj->transform.position[2] = -10;
-	obj->physics.gravityFactor = 1;
-
-	sceneAddItem(&scene, obj);
-
-	//
 	// Sponge!
 	//
 	obj = gameObjCreate("Resources/spongebob.obj", "Resources/spongebob.bmp");
-	mathVector3MultiplyScalar(2, obj->transform.scale, obj->transform.scale);
+	gameObjScale(obj, 2, 2, 2);
 	obj->transform.position[2] = -10;
 	obj->physics.gravityFactor = 0;
 
@@ -1086,7 +1070,7 @@ void createMenu()
 	glutCreateMenu(menu);
 
 	glutAddMenuEntry("Restart", 1);
-	glutAddSubMenu("Snowball Options", submenu_id);
+	glutAddSubMenu("Ball Throw Options", submenu_id);
 	glutAddMenuEntry("Exit", 6);
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
