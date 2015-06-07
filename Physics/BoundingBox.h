@@ -18,4 +18,7 @@ typedef struct BoundingBox {
 BoundingBox bboxCalculateFromModel(Model* model);
 void bboxRotate(BoundingBox* bbox, float angle);
 
+void bboxCheckCollision(BoundingBox* bbox1, BoundingBox* bbox2);
+void bboxResolveCollision(GameObject* a, GameObject* b);
+
 #endif

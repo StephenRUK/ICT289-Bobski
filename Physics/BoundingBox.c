@@ -58,3 +58,16 @@ void bboxRotate(BoundingBox* bbox, float angle) {
 	// Take min and max of the bounding box?
 	// Conditions: http://www.euclideanspace.com/threed/animation/collisiondetect/
 }
+
+void bboxCheckCollision(BoundingBox* bbox1, BoundingBox* bbox2) {
+	// Return true/false, or intersection?
+
+}
+
+void bboxResolveCollision(GameObject* a, GameObject* b) {
+
+
+
+
+
+}
