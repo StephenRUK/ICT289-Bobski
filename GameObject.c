@@ -6,7 +6,7 @@
 * Updates the position, velocity & acceleration of a given object.
 * Collisions are not considered here. dt determines magnitude of calculations.
 */
-void gameObjUpdatePhysics(GameObject* obj, float dt, Camera cam) {
+void gameObjUpdatePhysics(GameObject* obj, float dt) {
 	Transform* transform = &(obj->transform);
 	PhysicsObject* phys = &(obj->physics);
 
@@ -29,20 +29,6 @@ void gameObjUpdatePhysics(GameObject* obj, float dt, Camera cam) {
 	// 4 - Apply friction (subtract from acceleration)
 	// A) Make sure to apply friction opposite to the direction of acceleration.
 	// B) Make sure not to get a negative velocity by applying friction. Only if object is moving.
-
-	// Protag position
-	if (phys->notProtag) return;
-
-	obj->transform.position[0] = cam.X - 1.5;
-	obj->transform.position[1] = cam.Y - 1.5;
-	obj->transform.position[2] = cam.Z + 57;
-
-	/*obj->transform.rotationAngles[0] = cam.fwdX + cam.tSpeed;*/
-	obj->transform.rotationAngles[1] = cam.fwdY + cam.tSpeed;	//<------------------HOW DO YOU MAKE HIM ROTATE APPROPRIATE TO THE CAMERA?
-	/*obj->transform.rotationAngles[2] = cam.fwdZ + cam.tSpeed;*/
-
-	/*GLfloat fwdX, fwdY, fwdZ;
-	GLfloat upX, upY, upZ;*/
 
 }
 
