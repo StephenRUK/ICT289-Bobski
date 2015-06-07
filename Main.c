@@ -70,12 +70,31 @@ void doPhysics() {
 	if (scene.first != NULL) {
 		item = scene.first;
 		while (item != NULL) {
+
 			gameObjUpdatePhysics(item->obj, dt);
 
 			item = item->next;
 		}
 	}
 	
+}
+
+void checkCollisions(){
+	SceneItem* cItem1;
+	SceneItem* cItem2;
+
+	if (scene.first != NULL){
+		cItem1 = scene.first;
+		cItem2 = cItem1->next;
+		while (cItem1 != NULL && cItem2 != NULL){
+
+			cItem1->obj->bbox = bboxCalculateFromModel(cItem1->obj);
+			collisionDetection(cItem1->obj->bbox, cItem2->obj->bbox);
+
+
+
+		}
+	}
 }
 
 void drawScene() {
@@ -101,7 +120,7 @@ void display(void) {
 	//
 	// Collisions
 	//
-
+	checkCollisions();
 	// Detect collisions
 
 	// Resolve collisions
