@@ -95,9 +95,13 @@ void checkCollisions(){
 			cItem2 = scene.first;
 
 			while (cItem2 != NULL) {
+
 				if (cItem1 != cItem2) {
 					collisionTrue = cResCheckCollision(&(cItem1->obj->bbox), &(cItem2->obj->bbox));
-					cResResolveCollision(cItem1->obj, cItem2->obj);
+					if (collisionTrue = 1){
+						cResResolveCollision(cItem1->obj, cItem2->obj);
+					}
+					
 				}
 
 				cItem2 = cItem2->next;
@@ -335,6 +339,20 @@ void initGameObjects() {
 	obj->physics.gravityFactor = 0;
 
 	sceneAddItem(&scene, obj);
+
+	//
+	//Skybox
+	//
+	obj = gameObjCreate("Resources/box.obj", "Resources/house.bmp");
+
+	obj->transform.position[2] = -10;
+
+	mathVector3MultiplyScalar(500, obj->transform.scale, obj->transform.scale);
+
+	obj->physics.isKinetic = 0;
+
+	sceneAddItem(&scene, obj);
+
 }
 
 void idle() {

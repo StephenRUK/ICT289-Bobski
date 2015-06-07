@@ -17,8 +17,7 @@ int cResCheckCollision(BoundingBox* bbox1, BoundingBox* bbox2) {
 
 void cResResolveCollision(GameObject* a, GameObject* b) {
 
-
-
-
+	//a->physics.velocity[1] = 10;
+	//b->physics.velocity[1] = 10;
 
 }
