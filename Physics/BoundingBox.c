@@ -51,4 +51,10 @@ void bboxRotate(BoundingBox* bbox, float angle) {
 	bbox->max[0] = bbox->max[0] * sin(angleInRad);
 	bbox->max[2] = bbox->max[2] * cos(angleInRad);
 
+	//
+	// Recalculate bounding box so it's axis-aligned
+	//
+
+	// Take min and max of the bounding box?
+	// Conditions: http://www.euclideanspace.com/threed/animation/collisiondetect/
 }
