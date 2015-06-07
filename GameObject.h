@@ -23,4 +23,6 @@ void gameObjUpdatePhysics(GameObject* obj, float dt);
 
 void gameObjDrawModel(GameObject* obj);
 
+void gameObjScale(GameObject* obj, float scaleX, float scaleY, float scaleZ);
+
 #endif

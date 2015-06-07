@@ -11,8 +11,10 @@
 */
 void bboxCalculateFromModel(BoundingBox* bbox, Model* model) {
 	vec3* verts = model->vertices;
-	
 	int i;
+
+	memset(bbox, 0, sizeof(BoundingBox));
+
 	for (i = 0; i < model->vertexCount; i++) {
 		
 		if (verts[i][0] < bbox->minX) bbox->minX = verts[i][0];	// min x
@@ -57,4 +59,18 @@ void bboxRotate(BoundingBox* bbox, float angle) {
 
 	// Take min and max of the bounding box?
 	// Conditions: http://www.euclideanspace.com/threed/animation/collisiondetect/
+}
+
+void bboxScale(BoundingBox* bbox, float scaleX, float scaleY, float scaleZ) {
+	bbox->minX *= scaleX;
+	bbox->minY *= scaleY;
+	bbox->minZ *= scaleZ;
+
+	bbox->maxX *= scaleX;
+	bbox->maxY *= scaleY;
+	bbox->maxZ *= scaleZ;
+
+	bbox->centreX *= scaleX;
+	bbox->centreY *= scaleY;
+	bbox->centreZ *= scaleZ;
 }

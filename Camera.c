@@ -21,6 +21,7 @@ Camera camWithDefaults() {
 	// Set up player GameObject. Used for position and collisions.
 	cam.player = gameObjCreate("", "");
 	cam.player->physics.gravityFactor = 0.0f;
+	cam.player->physics.isKinetic = 0;
 
 	// Camera position points to transform position
 	cam.X = &(cam.player->transform.position[0]);

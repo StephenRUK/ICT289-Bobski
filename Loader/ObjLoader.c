@@ -43,7 +43,8 @@ void objLoadModel(Model* model, char* filePath) {
 	int j;	// loop index
 
 
-
+	// Init model with zeroes
+	memset(model, 0, sizeof(Model));
 
 	objFile = fopen(filePath, "r");
 

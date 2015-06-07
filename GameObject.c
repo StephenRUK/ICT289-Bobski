@@ -19,6 +19,12 @@ void gameObjUpdatePhysics(GameObject* obj, float dt) {
 	mathVector3MultiplyScalar(dt, phys->velocity, deltaPos);
 	mathVector3Add(deltaPos, transform->position, transform->position);
 
+	// Cheap workaround for debugging until collisions work?
+	if (transform->position[1] < 0) {
+		transform->position[1] = 0;
+		phys->velocity[1] = 0;
+	}
+
 	// 2 - Update velocity	
 	mathVector3MultiplyScalar(dt, phys->acceleration, dv);
 	mathVector3Add(dv, phys->velocity, phys->velocity);
@@ -29,6 +35,11 @@ void gameObjUpdatePhysics(GameObject* obj, float dt) {
 	// 4 - Apply friction (subtract from acceleration)
 	// A) Make sure to apply friction opposite to the direction of acceleration.
 	// B) Make sure not to get a negative velocity by applying friction. Only if object is moving.
+
+	// Apply friction if on ground. Currently with fixed coefficient
+	if (transform->position[1] == 0) {
+		mathVector3MultiplyScalar(1 - (0.55*dt), phys->velocity, phys->velocity);
+	}
 
 }
 
@@ -116,4 +127,14 @@ GameObject* gameObjCreate(char* modelPath, char* texturePath) {
 	obj->bbox = bbox;
 	
 	return obj;
+}
+
+void gameObjScale(GameObject* obj, float scaleX, float scaleY, float scaleZ) {
+	obj->transform.scale[0] = obj->transform.scale[0] * scaleX;
+	obj->transform.scale[1] = obj->transform.scale[1] * scaleY;
+	obj->transform.scale[2] = obj->transform.scale[2] * scaleZ;
+
+	bboxScale(&(obj->bbox), scaleX, scaleY, scaleZ);
+
+
 }
