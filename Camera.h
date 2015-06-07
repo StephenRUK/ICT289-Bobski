@@ -17,6 +17,7 @@ typedef struct Camera {
 } Camera;
 
 Camera camWithDefaults();
+void camReset(Camera* cam);
 
 void camWalkForwards(Camera* cam, GLfloat distance);
 void camWalkBackwards(Camera* cam, GLfloat distance);

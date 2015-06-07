@@ -21,7 +21,6 @@ Camera camWithDefaults() {
 	// Set up player GameObject. Used for position and collisions.
 	cam.player = gameObjCreate("", "");
 	cam.player->physics.gravityFactor = 0.0f;
-	cam.player->physics.isKinetic = 0;
 
 	// Camera position points to transform position
 	cam.X = &(cam.player->transform.position[0]);
@@ -29,24 +28,28 @@ Camera camWithDefaults() {
 	cam.Z = &(cam.player->transform.position[2]);
 
 	// Set initial position
-	*(cam.X) = 0.0;
-	*(cam.Y) = 1.7f;
-	*(cam.Z) = 0.0f;
-
-	cam.fwdX = 0;
-	cam.fwdY = 0;
-	cam.fwdZ = -1;
-
-	cam.upX = 0;
-	cam.upY = 1;
-	cam.upZ = 0;
-
-	cam.pitch = 0;
-	cam.yaw = 0;
+	camReset(&cam);
 
 	cam.maxPitch = mathDegToRad(85);
 
 	return cam;
+}
+
+void camReset(Camera* cam) {
+	*(cam->X) = 0.0;
+	*(cam->Y) = 1.7f;
+	*(cam->Z) = 0.0f;
+
+	cam->fwdX = 0;
+	cam->fwdY = 0;
+	cam->fwdZ = -1;
+
+	cam->upX = 0;
+	cam->upY = 1;
+	cam->upZ = 0;
+
+	cam->pitch = 0;
+	cam->yaw = 0;
 }
 
 void camWalkForwards(Camera* cam, GLfloat distance) {

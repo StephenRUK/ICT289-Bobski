@@ -22,6 +22,20 @@
 const int windowWidth = 1280;
 const int windowHeight = 720;
 
+/*
+void drawPhoto(Bitmap, int, int);
+void menuInit(void);
+void menu(int);
+*/
+static int window;
+static int wind;
+static int menu_id;
+static int submenu_id;
+static int num = 0;
+static int stateExit;
+
+Bitmap exitPhoto;	// Loaded during init
+
 Camera cam;
 
 GameObject *sBox;
@@ -58,6 +72,48 @@ GLfloat lightColour2[] = { 0.2, 0.2, 0.2, 1.0 };
 
 //***********************************/
 
+void drawPhoto(Bitmap* img, float x, float y)
+{
+	glRasterPos2f(x, y);
+	glDrawPixels(img->width, img->height, GL_BGR_EXT, GL_UNSIGNED_BYTE, img->data);
+	//glBitmap(img.width, img.height, 250, 250, 0, 0, img.data);
+}
+
+void loadPhoto()
+{
+	imgLoadBitmap("Resources/TheDevs.bmp", &exitPhoto);
+}
+
+void exitDraw() {
+	GameObject* obj;
+
+	glClearColor(0, 0, 0, 1);
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	drawPhoto(&exitPhoto, 250, 80);
+
+	glutSwapBuffers();
+	glFlush();
+}
+
+void exitInit() {
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+
+	gluOrtho2D(0, windowWidth, 0, windowHeight);
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+	glutDisplayFunc(exitDraw);
+
+	glutIdleFunc(NULL);
+	glDisable(GL_LIGHTING);
+
+	glutPostRedisplay();
+
+}
+
 void doPhysics() {
 	int newElapsedTime;
 	SceneItem* item;
@@ -80,8 +136,6 @@ void doPhysics() {
 	}
 	
 }
-
-
 
 void drawScene() {
 	SceneItem* item;
@@ -135,7 +189,16 @@ void moveSkyBox(){
 	sBox->transform.position[2] = cam.player->transform.position[2];
 }
 
-void display(void) {
+void display(void) 
+{
+	if (stateExit == 1)
+	{
+		exitInit();
+		//glutIdleFunc(NULL);
+		//glutPostRedisplay();
+		//return;
+	}
+
 	//
 	// Physics
 	//
@@ -179,10 +242,6 @@ void display(void) {
 
 	//-----------------------
 
-
-	//drawGround(texGround);
-
-	//glTranslatef(0, 0, -60);
 	checkCollisions();
 
 	// Draw skybox
@@ -280,10 +339,14 @@ void mouseMoveHandler(int x, int y) {
 	lastMouseY = y;
 }
 
+void mouseClickHandler(int button, int state, int x, int y) {
+	if (stateExit) {
+		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+			glutExit();
+		}
+	}
 
-/*void loadTextures() {
-	texGround= imgLoadBitmapToTexture("Resources/piste_snow.bmp");
-}*/
+}
 
 void initGameObjects() {
 	GameObject *obj;
@@ -495,6 +558,7 @@ void initGameObjects() {
 
 	sceneAddItem(&scene, obj);
 
+
 	//
 	// Wall
 	//
@@ -552,14 +616,67 @@ void idle() {
 	glutPostRedisplay();
 }
 
+void menu(num)
+{
+	switch (num)
+	{
+	case 1:
+		camReset(&cam);
+		break;
+	case 2:
+		playerThrowSpeed += 1;
+		break;
+	case 3:
+		playerThrowSpeed -= 1;
+		break;
+	case 4:
+		playerThrowAngle += 50;
+		break;
+	case 5:
+		playerThrowAngle -= 50;
+		break;
+	case 6:
+		stateExit = 1;
+		
+		//glutDestroyWindow(window);
+	}
+	glutPostRedisplay();
+}
+
+void createMenu()
+{
+	//Sub Menu
+	submenu_id = glutCreateMenu(menu);
+
+	glutAddMenuEntry("Increase Velocity", 2);
+	glutAddMenuEntry("Decrease Velocity", 3);
+
+	glutAddMenuEntry("Increase Angle", 4);
+	glutAddMenuEntry("Decrease Angle", 5);
+
+	//Main Menu
+	glutCreateMenu(menu);
+
+	glutAddMenuEntry("Restart", 1);
+	glutAddSubMenu("Snowball Options", submenu_id);
+	glutAddMenuEntry("Exit", 6);
+
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
+}
+
+
+
 void init() {
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
 	glutInitWindowSize(windowWidth, windowHeight);
-	glutCreateWindow("Project Bobski (alpha)");
+	window = glutCreateWindow("Project Bobski (alpha)");
+
+	createMenu();
 
 	glutDisplayFunc(display);
 	glutSpecialFunc(keyFunc);
 	glutKeyboardFunc(keyFunc2);
+	glutMouseFunc(mouseClickHandler);
 	//glutPassiveMotionFunc(mouseMoveHandler);
 	glutIdleFunc(idle);
 
@@ -574,7 +691,6 @@ void init() {
 	cam = camWithDefaults();
 	sceneAddItem(&scene, cam.player);
 
-	//loadTextures();
 	initGameObjects();
 
 	// Lighting and blending
@@ -593,6 +709,9 @@ void init() {
     glMatrixMode(GL_MODELVIEW);	
 
 	glClearColor(0, 0, 0, 1);
+
+	// Pre-load photo for exit screen
+	loadPhoto();
 
 }
 
