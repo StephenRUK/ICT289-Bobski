@@ -18,9 +18,19 @@
 Camera camWithDefaults() {
 	Camera cam;
 
-	cam.X = 0;
-	cam.Y = 1;
-	cam.Z = -1;
+	// Set up player GameObject. Used for position and collisions.
+	cam.player = gameObjCreate("", "");
+	cam.player->physics.gravityFactor = 0.0f;
+
+	// Camera position points to transform position
+	cam.X = &(cam.player->transform.position[0]);
+	cam.Y = &(cam.player->transform.position[1]);
+	cam.Z = &(cam.player->transform.position[2]);
+
+	// Set initial position
+	*(cam.X) = 0.0;
+	*(cam.Y) = 1.7f;
+	*(cam.Z) = 0.0f;
 
 	cam.fwdX = 0;
 	cam.fwdY = 0;
@@ -39,8 +49,8 @@ Camera camWithDefaults() {
 }
 
 void camWalkForwards(Camera* cam, GLfloat distance) {
-	cam->X += cam->fwdX * distance;
-	cam->Z += cam->fwdZ * distance;
+	*(cam->X) += cam->fwdX * distance;
+	*(cam->Z) += cam->fwdZ * distance;
 }
 
 void camWalkBackwards(Camera* cam, GLfloat distance) {
@@ -53,8 +63,8 @@ void camStrafeLeft(Camera* cam, GLfloat distance) {
 	vec3 left;
 	mathCrossProduct(up, dir, left);
 
-	cam->X += distance * left[0];
-	cam->Z += distance * left[2];
+	*(cam->X) += distance * left[0];
+	*(cam->Z) += distance * left[2];
 }
 
 void camStrafeRight(Camera* cam, GLfloat distance) {
@@ -63,8 +73,8 @@ void camStrafeRight(Camera* cam, GLfloat distance) {
 	vec3 right;
 	mathCrossProduct(dir, up, right);
 
-	cam->X += distance * right[0];
-	cam->Z += distance * right[2];
+	*(cam->X) += distance * right[0];
+	*(cam->Z) += distance * right[2];
 }
 
 

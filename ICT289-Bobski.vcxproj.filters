@@ -104,8 +104,14 @@
   <ItemGroup>
     <Resource Include="Resources\box.obj" />
     <Resource Include="Resources\spongebob.obj" />
+    <Resource Include="Resources\ball.obj" />
   </ItemGroup>
   <ItemGroup>
     <Object Include="Resources\wall.obj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ball.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
